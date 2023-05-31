@@ -1,11 +1,12 @@
 # Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
 version: '3.7'
  
-# Define services
+# Define services 
 services:
   # App backend service
   app-server:
     # Configuration for building the docker image for the backend service
+    container_name: gestionespese-container
     build:
       context: GESTIONE-SPESE-SPRING\gestorespese # Use an image built from the specified dockerfile in the `spring-boot-oauth2-social-login` directory.
       dockerfile: Dockerfile
@@ -24,6 +25,7 @@ services:
  
   # Frontend Service 
   gestore-spese-web:
+    container_name: gestionespese-container
     build:
       context: GESTIONE-SPESE-NG\gestionespese # Use an image built from the specified dockerfile in the `angular-11-social-login` directory.
       dockerfile: Dockerfile
@@ -39,6 +41,7 @@ services:
  
   # Database Service (Mysql)
   db:
+    container_name: gestionespese-container
     image: mysql:8.0
     ports:
       - "3306:3306"

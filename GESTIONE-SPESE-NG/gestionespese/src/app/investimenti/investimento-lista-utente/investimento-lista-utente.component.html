@@ -1,0 +1,176 @@
+
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Lista investimenti per utente </h2>
+
+        <form [formGroup]="listaInvestimentiForm" (ngSubmit)="ricercaInvestimenti()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="utentiList">Utente</label>
+                    <select class="form-control" id="utentiList" formControlName="utenteForm">
+                        <option selected value="">Selezionare un utente</option>
+                        <option *ngFor="let utente of listaUtenti" [value]="utente.id" >{{utente.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group d-flex justify-content-end">
+                    <button 
+                        type="button" 
+                        class="btn btn-info mr-3" 
+                        (click)="resetCampi()"
+                    >   
+                        Reset campi
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="listaInvestimentiForm.invalid"
+                    >   
+                        <fa-icon [icon]="faSearch"></fa-icon>
+                        Ricerca
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="listaInvestimenti && listaInvestimenti.length > 0">    
+            <h2 class="justify-left"> Risultati </h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Investimento</th>
+                        <th scope="col">Quote Totali</th>
+                        <th scope="col">Quotazione Attuale</th>
+                        <th scope="col">Valore Attuale</th>
+                        <th scope="col">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item, of listaInvestimenti; index as i">
+                        <th scope="row">{{ (i + 1) }}</th>
+                        <td>{{ item.investimento.nomeInvestimento }}</td>
+                        <td>{{ item.quoteTotali  | number: '1.0-4' }}</td>
+                        <td>{{ item.investimento.quotaAttuale  | number: '1.0-4' }}</td>
+                        <td>{{ (item.quoteTotali * item.investimento.quotaAttuale)  | number: '1.0-2' }}</td>
+                        <td>
+                            <a class="icon-table" (click)="openStorico(contentstorico, item)">
+                                <fa-icon [icon]="faStorico" class="primary"></fa-icon>
+                            </a>
+                            <a class="icon-table" (click)="open(content, item, 'Acquisto')">
+                                <fa-icon [icon]="faPlus" class="primary"></fa-icon>
+                            </a>
+                            <a class="icon-table" (click)="open(content, item, 'Vendita')" *ngIf="item.quoteTotali > 0">
+                                <fa-icon [icon]="faMinus" class="icon-danger"></fa-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+            <div class="row">
+                <div class="col-auto">
+                    <span class="badge bg-primary badge-spese">
+                        <strong>Valore Attuale:</strong>
+                        {{valoreTotale | number: '1.0-2'}}
+                    </span>
+                    <span class="badge bg-info badge-spese ml-1">
+                        <strong>Margine:</strong>
+                        {{(valoreTotale - spesa) | number: '1.0-2'}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="aggiorna-investimento">{{tipo}} quote</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="editForm">
+        <div class="row">
+            <div class="col form-group">
+                <label for="quotazione">Quotazione</label>
+                <input 
+                    type="number" 
+                    step="0.001"
+                    class="form-control" 
+                    id="quotazione" 
+                    formControlName="quotazione"
+                >
+            </div>
+            <div class="col form-group">
+                <label for="quote">Quote</label>
+                <input 
+                    type="number" 
+                    step="0.001"
+                    class="form-control" 
+                    id="quote" 
+                    formControlName="quote"
+                    placeholder="Inserire le quote"
+                >
+            </div>
+            <div class="col form-group">
+                <label for="data">Data {{tipo}}</label>
+                <div class="input-group">
+                    <input class="form-control" placeholder="Nel formato giorno-mese-anno" id="data"
+                            name="dp" formControlName="data" ngbDatepicker #d1="ngbDatepicker">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button">
+                            <fa-icon [icon]="faCalendar"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Salva')">Salve</button>
+    </div>
+</ng-template>
+
+<ng-template #contentstorico let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title primary" id="storico-investimento">Storico Investimento</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="p-3" *ngIf="listaInvestimentoStorico && listaInvestimentoStorico.length > 0">    
+            <h2 class="justify-left"> Risultati </h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Investimento</th>
+                        <th scope="col">Quote</th>
+                        <th scope="col">Quotazione</th>
+                        <th scope="col">Entrata</th>
+                        <th scope="col">Uscita</th>
+                        <th scope="col">Data operazione</th>
+                        <th scope="col">Tipo operazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item, of listaInvestimentoStorico; index as i">
+                        <th scope="row">{{ (i + 1) }}</th>
+                        <td>{{ item.utenteInvestimento.investimento.nomeInvestimento }}</td>
+                        <td>{{ item.nrQuote  | number: '1.0-4' }}</td>
+                        <td>{{ item.quotazione  | number: '1.0-4' }}</td>
+                        <td>{{ item.entrata | number: '1.0-2' }}</td>
+                        <td>{{ item.uscita | number: '1.0-2' }}</td>
+                        <td>{{ item.dataOperazione }}</td>
+                        <td>{{ item.operazione }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</ng-template>

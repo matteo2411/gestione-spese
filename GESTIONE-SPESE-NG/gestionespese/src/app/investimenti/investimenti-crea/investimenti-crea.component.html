@@ -1,0 +1,43 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Crea investimento </h2>
+        <form [formGroup]="creaInvestimentoForm" (ngSubmit)="creaInvestimento()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="nomeInvestimento">Nome investimento</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="nomeInvestimento" 
+                        formControlName="nomeInvestimento"
+                        aria-describedby="nomeInvestimentoHelp" 
+                        placeholder="Inserire il nome"
+                    >
+                    <small id="nomeInvestimentoHelp" class="form-text text-muted">Nome dell'investimento da creare</small>
+                </div>
+                <div class="col form-group">
+                    <label for="quotaAttuale">Quota attuale investimento</label>
+                    <input 
+                        type="number" 
+                        step="0.001"
+                        class="form-control" 
+                        id="quotaAttuale" 
+                        formControlName="quotaAttuale"
+                        aria-describedby="quotaAttualeHelp" 
+                        placeholder="Inserire la quota"
+                    >
+                    <small id="quotaAttualeHelp" class="form-text text-muted">Quota dell'investimento da creare</small>
+                </div>
+                <div class="col form-group d-flex align-items-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="creaInvestimentoForm.invalid"
+                    >   
+                        Crea
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

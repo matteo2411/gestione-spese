@@ -1,0 +1,30 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Crea account </h2>
+        <form [formGroup]="creaAccountForm" (ngSubmit)="creaAccount()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="nomeAccount">Nome categoria</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="nomeAccount" 
+                        formControlName="nomeAccount"
+                        aria-describedby="nomeAccountHelp" 
+                        placeholder="Inserire il nome"
+                    >
+                    <small id="nomeAccountHelp" class="form-text text-muted">Nome dell'account da creare</small>
+                </div>
+                <div class="col form-group d-flex align-items-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="creaAccountForm.invalid"
+                    >   
+                        Crea
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Lista investimenti </h2>
+        <table class="table table-striped" *ngIf="listaInvestimenti && listaInvestimenti.length">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Quota</th>
+                <th scope="col">Data aggiornamento</th>
+                <th scope="col">Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item, of listaInvestimenti; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ item.nomeInvestimento }}</td>
+                    <td>{{ item.quotaAttuale }}</td>
+                    <td>{{ item.dataAggiornamento }}</td>
+                    <td>
+                        <a class="icon-table" (click)="link(item)" *ngIf="item.url">
+                            <fa-icon [icon]="faLink" class="primary"></fa-icon>
+                        </a>
+                        <a class="icon-table" (click)="cancella(item.id)">
+                            <fa-icon [icon]="faTimes" class="primary"></fa-icon>
+                        </a>
+                        <a class="icon-table" (click)="open(content,item)">
+                            <fa-icon [icon]="faEdit" class="primary"></fa-icon>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>  
+        <span *ngIf="!listaInvestimenti || !listaInvestimenti.length">
+          Nessun fondo di investimento presente, utilizzare la funzione apposita per creare il primo fondo d'investimento oppure
+          <a [routerLink]="['/investimenti/crea']" [queryParams]="{'idParent': '2', 'indietro': 0}" routerLinkActive="active">clicca qui</a>
+        </span>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="aggiorna-quotazione">Aggiorna quotazione</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="editForm">
+        <div class="row">
+          <div class="col form-group">
+              <label for="quotazione">Quotazione</label>
+              <input 
+                  type="number" 
+                  step="0.001"
+                  class="form-control" 
+                  id="quotazione" 
+                  formControlName="quotazione"
+                  aria-describedby="quotazioneHelp" 
+                  placeholder="Inserire la quotazione"
+              >
+              <small id="quotazioneHelp" class="form-text text-muted">Quotazione aggiornata</small>
+          </div>
+          <div class="col form-group">
+            <label for="quotazione">Link</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="link" 
+                formControlName="link"
+                aria-describedby="linkHelp" 
+                placeholder="Inserire la url"
+            >
+            <small id="linkHelp" class="form-text text-muted">Link alla quotazione</small>
+          </div>
+        </div>
+        <div class="row" *ngIf="editForm.value.link && editForm.value.link.length">
+          <div class="col form-group">
+              <a [attr.href]="editForm.value.link" target="_blank">Vai al link</a>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Salva')">Save</button>
+    </div>
+</ng-template>

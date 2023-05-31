@@ -1,0 +1,38 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Crea tipologia </h2>
+        <form [formGroup]="creaTipologiaForm" (ngSubmit)="creaTipologia()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="nomeTipologia">Nome tipologia</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="nomeTipologia" 
+                        formControlName="nomeTipologia"
+                        aria-describedby="nomeTipologiaHelp" 
+                        placeholder="Inserire il nome"
+                    >
+                    <small id="nomeTipologiaHelp" class="form-text text-muted">Nome della tipologia da creare</small>
+                </div>
+                <div class="col form-group">
+                    <label for="categorieList">Categoria</label>
+                    <select class="form-control" id="categorieList" aria-describedby="categoriaListHelp" formControlName="categoria">
+                        <option selected value="">Selezionare una categoria</option>
+                        <option *ngFor="let categoria of listaCategorie" [value]="categoria.id">{{categoria.nomeCategoria}}</option>
+                    </select>
+                    <small id="categoriaListHelp" class="form-text text-muted">Categoria associata alla tipologia</small>
+                </div>
+                <div class="col form-group d-flex align-items-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="creaTipologiaForm.invalid"
+                    >   
+                        Crea
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Crea categoria </h2>
+        <form [formGroup]="creaCategoriaForm" (ngSubmit)="creaCategoria()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="nomeCategoria">Nome categoria</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="nomeCategoria" 
+                        formControlName="nomeCategoria"
+                        aria-describedby="nomeCategoriaHelp" 
+                        placeholder="Inserire il nome"
+                    >
+                    <small id="nomeCategoriaHelp" class="form-text text-muted">Nome della categoria da creare</small>
+                </div>
+                <div class="col form-group">
+                    <label for="tipoCategoria">Tipo Categoria</label>
+                    <select class="form-control" id="tipoCategoria" aria-describedby="tipoCategoriaHelp" formControlName="categoria">
+                        <option selected value="">Selezionare una tipologia</option>
+                        <option value="categoria-padre">Categoria Padre</option>
+                        <option value="sotto-categoria">Sotto Categoria</option>
+                    </select>
+                    <small id="tipoCategoriaHelp" class="form-text text-muted">Tipologia della categoria da creare</small>
+                </div>
+                <div class="col form-group" *ngIf="creaCategoriaForm.value.categoria === 'sotto-categoria'">
+                    <label for="listaCategorie">Categoria Padre</label>
+                    <select class="form-control" id="listaCategorie" aria-describedby="categoriaListHelp" formControlName="categoriaPadre">
+                        <option selected value="">Selezionare una categoria</option>
+                        <option *ngFor="let categoria of listaCategorie" [value]="categoria.id">{{categoria.nomeCategoria}}</option>
+                    </select>
+                    <small id="categoriaListHelp" class="form-text text-muted">Categoria Padre</small>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col form-group d-flex align-items-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="creaCategoriaForm.invalid"
+                    >   
+                        Crea
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Lista categorie </h2>
+        <!-- <table class="table table-striped" *ngIf="listaCategorieVisibili && listaCategorieVisibili.length">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome categoria</th>
+                <th scope="col">Categoria Padre</th>
+                <th scope="col">Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item, of listaCategorieVisibili; index as i">
+                    <th scope="row">{{ (i + 1)+((page-1)*pageSize) }}</th>
+                    <td>{{ item.nomeCategoria }}</td>
+                    <td>{{ item.categoriaPadre?.nomeCategoria }}</td>
+                    <td>
+                        <a class="icon-table" (click)="cancella(item.id)">
+                            <fa-icon [icon]="faTimes" class="primary"></fa-icon>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>    
+
+        <div class="d-flex justify-content-between p-2" *ngIf="listaCategorieVisibili && listaCategorieVisibili.length">
+            <ngb-pagination [collectionSize]="listaSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshData()">
+            </ngb-pagination>
+            
+            <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
+                <option [ngValue]="6">6 elementi per pagina</option>
+                <option [ngValue]="8">8 elementi per pagina</option>
+                <option [ngValue]="10">10 elementi per pagina</option>
+            </select>
+        </div>     -->
+
+        <div class="row mb-2 d-flex justify-content-end">
+            <div class="col-auto">
+                    <button 
+                    type="button" 
+                    class="btn btn-primary" 
+                    (click)="eliminaCategoria()"
+                    [disabled]="!selectedFile || !selectedFile.data"
+                >   
+                    Elimina
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card flex justify-content-center">
+                    <p-tree class="w-full md:w-30rem" [value]="files" selectionMode="single" [(selection)]="selectedFile"></p-tree>
+                </div>
+            </div>
+        </div>
+
+        <span *ngIf="!listaCategorieVisibili || !listaCategorieVisibili.length">
+            Nessuna categoria presente, utilizzare la funzione apposita per creare la prima categoria oppure
+            <a [routerLink]="['/categorie/crea']" [queryParams]="{'idParent': '1-5', 'indietro': 0}" routerLinkActive="active">clicca qui</a>
+        </span>
+
+    </div>
+</div>

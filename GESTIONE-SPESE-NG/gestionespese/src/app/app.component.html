@@ -1,0 +1,22 @@
+<!-- <app-navbar></app-navbar> -->
+
+<div class="row">
+    <div class="col bg-white menu-top title-app">
+        <span class="h1 pointer primary" (click)="goToHome()">Gestione Spese</span>
+        <span class="primary float-right mr-4 mt-4">{{time | date:'medium'}}</span>
+    </div>
+</div>
+<div class="row">
+
+    <app-side-navbar></app-side-navbar>
+    <div class="col content">
+        <app-message></app-message>
+        <app-breadcrumb></app-breadcrumb>
+        <div class="mt-4">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+
+</div>
+
+<app-spinner-gestione-spese></app-spinner-gestione-spese>

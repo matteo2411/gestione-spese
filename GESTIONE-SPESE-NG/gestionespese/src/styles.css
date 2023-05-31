@@ -1,0 +1,163 @@
+@import "primeicons/primeicons.css";
+@import "/src/variables.scss";
+
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+    font-family: var(--font-family);
+    /* font-family: Roboto, "Helvetica Neue", sans-serif;  */
+}
+
+.bg-white {
+    background-color: white;
+}
+
+h2,h1 {
+    color : var(--primary-color)
+}
+
+h2{
+    font-weight: 400;
+}
+
+.p-1 {
+    padding: 1rem;
+}
+
+.box {
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 22px;
+    padding: 2rem;
+    box-shadow: 0 3px 4px #0000001a, 0 24px 36px #0000000a;
+    background-color: #ffffff;
+}
+
+.primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.btn-primary {
+    background-color : var(--primary-color) !important;
+    border-color: #cccccc !important;
+}
+
+.color-white {
+    color : #fff;
+}
+
+.icon-table {
+    padding: 3px;
+    border-radius: 3px;
+    cursor : pointer ;
+}
+
+.icon-table:hover {
+    border: 1px solid blue;
+}
+
+.app-selezionata {
+    border: 2px solid #0062cc
+}
+
+.badge-spese {
+    color: white !important;
+    font-size: 95% !important;
+}
+
+.page-item.active .page-link {
+    background-color : #3f51b5 !important
+}
+
+.file-custom-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: 0.2rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.icon-danger {
+    color: red !important;
+}
+
+.modalClass .modal-content {
+    border: none;
+    background: none;
+}
+.modalClass .spinner-border {
+    width: 5rem !important;
+    height: 5rem !important;
+    border-width: 0.5rem;
+    border-color: #1f285a;
+    border-right-color: transparent;
+}
+
+.custom-modal-window {
+    z-index: 999 !important;
+}
+
+.custom-modal-backdrop {
+    z-index: 999 !important;
+}
+
+.text-center{
+    text-align: center !important;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.fa-2x {
+    font-size: 1.5em;
+}
+
+.pre-line{
+    white-space: pre-line
+}
+
+.p-card:hover{
+    border : 1px solid var(--primary-color) !important;
+    border-radius: 2px;
+}
+
+.btn-info{
+    border-color: var(--primary-color) !important;
+    background-color: white !important;
+    color: var(--primary-color) !important;
+}
+.btn-info:focus{
+    box-shadow: 0 0 0 0.2rem #38427782;
+}
+.w-full {
+    width: 100%!important;
+}
+
+p-overlay > div {
+    min-width: 280px !important;
+    transform-origin: center top !important;
+    top: 41px !important;
+    left: 0px !important;
+    z-index: 1001 !important;
+    width: 100% !important;
+}
+
+.p-treeselect-items-wrapper{
+    max-height: 14rem  !important;
+}
+
+.p-treeselect-label{
+    padding : 0 !important;
+}

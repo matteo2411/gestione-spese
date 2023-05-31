@@ -1,0 +1,66 @@
+
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Cruscotto </h2>
+
+        <form [formGroup]="listaSpeseForm" (ngSubmit)="ricerca()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="utentiList">Utente</label>
+                    <select class="form-control" id="utentiList" formControlName="utenteForm">
+                        <option selected value="">Selezionare un utente</option>
+                        <option *ngFor="let utente of listaUtenti" [value]="utente.id" >{{utente.name}}</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label for="utentiList">Anno</label>
+                    <select class="form-control" id="anniList" formControlName="annoForm">
+                        <option selected value="">Selezionare un anno</option>
+                        <option *ngFor="let anno of listaAnni" [value]="anno" >{{anno}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group d-flex justify-content-end">
+                    <button 
+                        type="button" 
+                        class="btn btn-info mr-3" 
+                        (click)="resetCampi()"
+                    >   
+                        Reset campi
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="listaSpeseForm.invalid"
+                    >   
+                        <fa-icon [icon]="faSearch"></fa-icon>
+                        Ricerca
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="listaSpese && listaSpese.length > 0">    
+            <h2 class="justify-left"> Risultati </h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Mese</th>
+                        <th scope="col">Entrate</th>
+                        <th scope="col">Uscite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item, of listaSpese; index as i">
+                        <th scope="row">{{ (i + 1) }}</th>
+                        <td>{{ item.mese }}</td>
+                        <td>{{ ((item.entrate)?item.entrate:0.00) | currency: 'EUR':'symbol' }}</td>
+                        <td>{{ ((item.uscite)?item.uscite:0.00) | currency: 'EUR':'symbol' }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+        </div>
+    </div>
+</div>

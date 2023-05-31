@@ -1,0 +1,17 @@
+.icon-text {
+    margin-bottom: 0 !important;
+    font-style: oblique;
+    text-align: center;
+}
+
+.app-box {
+    cursor : pointer;
+}
+
+.app-box:hover {
+    background-color: #f0f4ff;
+}
+
+.img-card{
+    height: 14rem;
+}

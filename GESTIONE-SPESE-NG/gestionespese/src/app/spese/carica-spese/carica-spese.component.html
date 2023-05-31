@@ -1,0 +1,197 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> 
+            Carica Spese
+            <button 
+                type="button" 
+                class="btn btn-primary ml-4" 
+                (click)="downloadTemplate()"
+            >   
+                <i class="pi pi-cloud-download pointer mr-2"></i>
+                Download template
+            </button>
+        </h2>
+        <form [formGroup]="caricaSpeseForm" (ngSubmit)="elabora()" class="mt-3">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="file">File spesa</label>
+                    <input 
+                        type="file"
+                        class="file-custom-control"
+                        formControlName="fileForm"
+                        id="file"
+                        (change)="handleFileInput($event)" 
+                    />
+                </div>
+                <div class="col form-group">
+                    <label for="accountList">Account spesa</label>
+                    <select class="form-control" id="accountList" formControlName="accountForm">
+                        <option selected value="">Selezionare un account</option>
+                        <option *ngFor="let account of listaAccount" [value]="account.id" >{{account.nomeAccount}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    <label for="utentiList">Utente spesa</label>
+                    <select class="form-control" id="utentiList" formControlName="utenteForm">
+                        <option selected value="">Selezionare un utente</option>
+                        <option *ngFor="let utente of listaUtenti" [value]="utente.id" >{{utente.name}}</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label for="descrizioneTextArea">Descrizione</label>
+                    <textarea 
+                        class="form-control" 
+                        id="descrizioneTextArea" 
+                        rows="3"
+                        formControlName="descrizioneForm"
+                    ></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group d-flex justify-content-end">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary mr-2" 
+                        [disabled]="!this.formData.get('file') || caricaSpeseForm.invalid || caricaSpeseForm.disabled"
+                    >   
+                        Elabora File
+                    </button>
+                    <button 
+                        type="button"
+                        (click)="inserisciManualmente()" 
+                        class="btn btn-info" 
+                        [disabled]="this.formData.get('file') || caricaSpeseForm.invalid || caricaSpeseForm.disabled"
+                    >   
+                        Carica Manualmente
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="p-3">       
+            <h2 class="justify-left" *ngIf="listaSpese && listaSpese.length > 0"> Lista Spese </h2>
+            <button 
+                (click)="aggiungiRiga()"
+                type="button" 
+                class="btn btn-primary" 
+                *ngIf="inserimento"
+            >   
+                Aggiungi Riga
+            </button>
+            <table class="table table-striped" *ngIf="listaSpese && listaSpese.length > 0">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Data Contabile</th>
+                        <th scope="col">Data Valuta</th>
+                        <th scope="col">Descrizione</th>
+                        <th scope="col">Entrate</th>
+                        <th scope="col">Uscite</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item, of listaSpeseVisibile; index as i">
+                        <th scope="row">{{ (i + 1)+((page-1)*pageSize) }}</th>
+                        <td *ngIf="!item.editable">{{ item.dataContabile }}</td>
+                        <td *ngIf="item.editable">
+                            <input type="text" [(ngModel)]="item.dataContabile" class="form-control" placeholder="mm-dd-yyyy" />
+                        </td>
+                        <td *ngIf="!item.editable">{{ item.dataValuta }}</td>
+                        <td *ngIf="item.editable">
+                            <input type="text" [(ngModel)]="item.dataValuta" class="form-control" placeholder="mm-dd-yyyy" />
+                        </td>
+                        <td [ngbTooltip]="item.descrizioneEstesa" container="body" placement="top">
+                            <div *ngIf="!item.editable">{{ item.descrizione }}</div>
+                            <div *ngIf="item.editable">
+                                <input type="text" [(ngModel)]="item.descrizione" class="form-control" />
+                            </div>
+                            <a class="icon-table" (click)="open(content, item)">
+                                <fa-icon [icon]="faComment" class="primary"></fa-icon>
+                            </a>
+                        </td>
+                        <td *ngIf="!item.editable">{{ item.entrate | currency: 'EUR':'symbol' }}</td>
+                        <td *ngIf="item.editable">
+                            <input type="number" [(ngModel)]="item.entrate" class="form-control" />
+                        </td>
+                        <td *ngIf="!item.editable">{{ item.uscite | currency: 'EUR':'symbol' }}</td>
+                        <td *ngIf="item.editable">
+                            <input type="number" [(ngModel)]="item.uscite" class="form-control" />
+                        </td>
+                        <td>
+                            <p-treeSelect 
+                                #categorieList
+                                class="md:w-20rem w-full" 
+                                containerStyleClass="w-full form-control"
+                                [(ngModel)]="item.categoriaScelta"
+                                [options]="listaCategorie" 
+                                placeholder="Seleziona categoria"
+                                [showClear]="true"
+                                [filter]="true"
+                            ></p-treeSelect>
+                        </td>
+                        <td>
+                            <a class="icon-table" (click)="cancella((i + 1)+((page-1)*pageSize)-1)">
+                                <fa-icon [icon]="faTimes" class="primary mr-2"></fa-icon>
+                            </a>
+                            <a class="icon-table" (click)="editable((i + 1)+((page-1)*pageSize)-1)" *ngIf="!item.editable">
+                                <fa-icon [icon]="faEdit" class="primary"></fa-icon>
+                            </a>
+                            <a class="icon-table" (click)="editable((i + 1)+((page-1)*pageSize)-1)" *ngIf="item.editable">
+                                <fa-icon [icon]="faSave" class="primary"></fa-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>    
+
+            <div class="d-flex justify-content-between p-2" *ngIf="listaSpese && listaSpese.length > 0">
+                <ngb-pagination [collectionSize]="listaSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshData()">
+                </ngb-pagination>
+                
+                <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
+                    <option [ngValue]="6">6 elementi per pagina</option>
+                    <option [ngValue]="8">8 elementi per pagina</option>
+                    <option [ngValue]="10">10 elementi per pagina</option>
+                </select>
+            </div> 
+
+            <button *ngIf="listaSpese && listaSpese.length > 0" class="btn btn-info mr-2" (click)="annulla()">Annulla</button>
+            <button *ngIf="listaSpese && listaSpese.length > 0" class="btn btn-primary" (click)="caricaSpese()">Carica Spese</button>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="aggiorna-descrizione">Aggiungi Descrizione Personale</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="descrizionePersonaleForm">
+        <div class="form-group">
+            <label for="descrizionePersonale">Descrizione personale</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="descrizionePersonale" 
+                formControlName="descrizionePersonale"
+                aria-describedby="descrizionePersonaleHelp" 
+                placeholder="Inserire la descrizione personale"
+            >
+            <small id="nomeTipologiaHelp" class="form-text text-muted">Descrizione personale aggiuntiva</small>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Salva')">Save</button>
+    </div>
+</ng-template>
+  
+  

@@ -1,0 +1,43 @@
+
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Associa investimenti a utente </h2>
+
+        <form [formGroup]="associaInvestimentoForm" (ngSubmit)="associaInvestimento()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="utentiList">Utente</label>
+                    <select class="form-control" id="utentiList" formControlName="utenteForm">
+                        <option selected value="">Selezionare un utente</option>
+                        <option *ngFor="let utente of listaUtenti" [value]="utente.id" >{{utente.name}}</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label for="listaInvestimenti">Investimento</label>
+                    <select class="form-control" id="listaInvestimenti" formControlName="investimentoForm">
+                        <option selected value="">Selezionare un investimento</option>
+                        <option *ngFor="let invest of listaInvestimenti" [value]="invest.id" >{{invest.nomeInvestimento}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group d-flex justify-content-end">
+                    <button 
+                        type="button" 
+                        class="btn btn-info mr-3" 
+                        (click)="resetCampi()"
+                    >   
+                        Reset campi
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="associaInvestimentoForm.invalid"
+                    >   
+                        Associa
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div class="col-1 side-menu mt-3 p-0">
+    <ul class="p-0">
+        <li *ngFor="let item of menuToShow" class="li-menu" [pTooltip]="item.tooltip" (click)="select(item)">
+            <i [class]="item.class"></i>
+        </li>
+    </ul>
+</div>

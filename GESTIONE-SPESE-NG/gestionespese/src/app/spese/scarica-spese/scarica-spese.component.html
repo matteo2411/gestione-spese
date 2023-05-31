@@ -1,0 +1,209 @@
+<div class="p-1">
+    <div class="box">
+        <h2 class="justify-left"> Lista Spese </h2>
+
+        <form [formGroup]="listaSpeseForm" (ngSubmit)="ricerca()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="utentiList">Utente</label>
+                    <select class="form-control" id="utentiList" formControlName="utenteForm">
+                        <option selected value="">Selezionare un utente</option>
+                        <option *ngFor="let utente of listaUtenti" [value]="utente.id" >{{utente.name}}</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label for="descrizioneSpesa">Descrizione spesa</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="descrizioneSpesa" 
+                        formControlName="descrizione"
+                        placeholder="Inserire la descrizione"
+                    >
+                </div>
+                <div class="col form-group">
+                    <label for="accountList">Account spesa</label>
+                    <select class="form-control" id="accountList" formControlName="accountForm">
+                        <option selected value="">Selezionare un account</option>
+                        <option *ngFor="let account of listaAccount" [value]="account.id" >{{account.nomeAccount}}</option>
+                    </select>
+                </div>
+                <div class="col form-group">
+                    <label for="categoriaList">Categoria</label>
+                    <p-treeSelect 
+                        class="md:w-20rem w-full" 
+                        containerStyleClass="w-full form-control"
+                        formControlName="categoriaForm" 
+                        [options]="listaCategorie" 
+                        placeholder="Seleziona categoria"
+                        [showClear]="true"
+                        [filter]="true"
+                    ></p-treeSelect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    <label for="dataContabileDa">Data Contabile Da</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Nel formato giorno-mese-anno" id="dataContabileDa"
+                                name="dp" formControlName="dataContabileDa" ngbDatepicker #d1="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d1.toggle()" type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col form-group">
+                    <label for="dataContabileDa">Data Contabile A</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Nel formato giorno-mese-anno" id="dataContabileA"
+                                name="dp" formControlName="dataContabileA" ngbDatepicker #d2="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group">
+                    <label for="dataValutaDa">Data Valuta Da</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Nel formato giorno-mese-anno" id="dataValutaDa"
+                                name="dp" formControlName="dataValutaDa" ngbDatepicker #d3="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d3.toggle()" type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col form-group">
+                    <label for="dataValutaA">Data Valuta A</label>
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Nel formato giorno-mese-anno" id="dataValutaA"
+                                name="dp" formControlName="dataValutaA" ngbDatepicker #d4="ngbDatepicker">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary calendar" (click)="d4.toggle()" type="button">
+                                <fa-icon [icon]="faCalendar"></fa-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group d-flex justify-content-end">
+                    <button 
+                        type="button" 
+                        class="btn btn-info mr-3" 
+                        (click)="resetCampi()"
+                    >   
+                        Reset campi
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="listaSpeseForm.invalid"
+                    >   
+                        <fa-icon [icon]="faSearch"></fa-icon>
+                        Ricerca
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="p-3" *ngIf="listaSpese && listaSpese.length > 0">    
+            <h2 class="justify-left"> Risultati </h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Data Contabile</th>
+                        <th scope="col">Data Valuta</th>
+                        <th scope="col">Descrizione</th>
+                        <th scope="col">Entrate</th>
+                        <th scope="col">Uscite</th>
+                        <th scope="col">Account</th>
+                        <th scope="col">Categoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item, of listaSpeseVisibile; index as i">
+                        <th scope="row">{{ (i + 1)+((page-1)*pageSize) }}</th>
+                        <td>{{ item.dataContabile }}</td>
+                        <td>{{ item.dataValuta }}</td>
+                        <td [ngbTooltip]="item.descrizioneEstesa" container="body" placement="top">
+                            {{ item.descrizioneCustom || item.descrizione }}
+                        </td>
+                        <td>{{ ((item.entrate)?item.entrate:0.00) | currency: 'EUR':'symbol' }}</td>
+                        <td>{{ ((item.uscite)?item.uscite:0.00) | currency: 'EUR':'symbol' }}</td>
+                        <td>{{ item.account?.nomeAccount }}</td>
+                        <td>{{ item.categoriaScelta?.nomeCategoria }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+
+            <div class="d-flex justify-content-between p-2">
+                <ngb-pagination 
+                    [maxSize]="10" 
+                    [boundaryLinks]="true" 
+                    [collectionSize]="listaSize" 
+                    [(page)]="page" 
+                    [pageSize]="pageSize" 
+                    (pageChange)="refreshData(false)"
+                >
+            </ngb-pagination>
+            
+            <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData(false)">
+                <option [ngValue]="6">6 elementi per pagina</option>
+                <option [ngValue]="8">8 elementi per pagina</option>
+                <option [ngValue]="10">10 elementi per pagina</option>
+            </select>
+            </div> 
+
+            <div class="row">
+                <div class="col">
+                    <span class="badge rounded-pill bg-primary badge-spese">
+                        <strong>Totale spese:</strong>
+                        {{totaleSpese | currency: 'EUR':'symbol' }}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col d-flex justify-content-center">
+                    <button 
+                        type="button" 
+                        class="btn btn-primary" 
+                        (click)="open(content)"
+                    >   
+                        <fa-icon [icon]="faChartPie"></fa-icon>
+                        Apri grafico
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Grafico Spese</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="col form-group">
+            <label for="accountList">Account spesa</label>
+            <select 
+                class="form-control" 
+                id="accountListGrafico" 
+                (change)="changeSelectGrafico($event);">
+                <option selected value="">Selezionare un account</option>
+                <option *ngFor="let account of listaAccount" [value]="account.id" >{{account.nomeAccount}}</option>
+            </select>
+        </div>
+        <app-piechart [pieChartLabels]="labelsGrafico" [pieChartData]="datiGrafico"></app-piechart>
+    </div>
+</ng-template>

@@ -1,0 +1,13 @@
+<ng-container *ngIf="service.successMessages">
+    <div class="alert alert-success" role="alert" *ngFor="let message of service.successMessages">
+        <h4 class="alert-heading">Ben fatto!</h4>
+        {{message}}
+    </div>
+</ng-container>
+
+<ng-container *ngIf="service.dangerMessages">
+    <div class="alert alert-danger" role="alert" *ngFor="let message of service.dangerMessages">
+        <h4 class="alert-heading">Attenzione!</h4>
+        {{message}}
+    </div>
+</ng-container>

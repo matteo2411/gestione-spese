@@ -1,0 +1,50 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Lista tipologie </h2>
+        <table class="table table-striped" *ngIf="listaTipologieVisibili && listaTipologieVisibili.length">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome tipologia</th>
+                <th scope="col">Nome categoria</th>
+                <th scope="col">Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item, of listaTipologieVisibili; index as i">
+                    <th scope="row">{{ (i + 1)+((page-1)*pageSize) }}</th>
+                    <td>{{ item.nomeTipologia }}</td>
+                    <td>{{ item.categoria.nomeCategoria }}</td>
+                    <td>
+                        <a class="icon-table" (click)="cancella(item.id)">
+                            <fa-icon [icon]="faTimes" class="primary"></fa-icon>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>  
+
+        <div class="d-flex justify-content-between p-2" *ngIf="listaTipologieVisibili && listaTipologieVisibili.length">
+            <ngb-pagination 
+                [maxSize]="10" 
+                [boundaryLinks]="true" 
+                [collectionSize]="listaSize" 
+                [(page)]="page" 
+                [pageSize]="pageSize" 
+                (pageChange)="refreshData()"
+            >
+            </ngb-pagination>
+            
+            <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
+                <option [ngValue]="6">6 elementi per pagina</option>
+                <option [ngValue]="8">8 elementi per pagina</option>
+                <option [ngValue]="10">10 elementi per pagina</option>
+            </select>
+        </div>   
+
+        <span *ngIf="!listaTipologieVisibili || !listaTipologieVisibili.length">
+            Nessuna tipologia presente, utilizzare la funzione apposita per creare la prima tipologia oppure
+            <a [routerLink]="['/tipologie/crea']" [queryParams]="{'idParent': '1-7', 'indietro': 0}" routerLinkActive="active">clicca qui</a>
+        </span>
+    </div>
+</div>

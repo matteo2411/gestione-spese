@@ -1,0 +1,42 @@
+<div class="p-3">
+    <div class="box">
+        <h2 class="justify-left"> Crea utente </h2>
+        <form [formGroup]="utenteForm" (ngSubmit)="creaUtente()">
+            <div class="row">
+                <div class="col form-group">
+                    <label for="nomeUtente">Nome utente</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="nomeUtente" 
+                        formControlName="name"
+                        aria-describedby="nomeUtenteHelp" 
+                        placeholder="Inserire il nome"
+                    >
+                    <small id="nomeUtenteHelp" class="form-text text-muted">Nome dell'utente da creare</small>
+                </div>
+                <div class="col form-group">
+                    <label for="emailUtente">Email utente</label>
+                    <input 
+                        type="email" 
+                        class="form-control" 
+                        id="emailUtente" 
+                        formControlName="email"
+                        aria-describedby="emailUtenteHelp" 
+                        placeholder="Inserire la mail"
+                    >
+                    <small id="emailUtenteHelp" class="form-text text-muted">Email dell'utente da creare</small>
+                </div>
+                <div class="col form-group d-flex align-items-center">
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary" 
+                        [disabled]="utenteForm.invalid"
+                    >   
+                        Crea
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

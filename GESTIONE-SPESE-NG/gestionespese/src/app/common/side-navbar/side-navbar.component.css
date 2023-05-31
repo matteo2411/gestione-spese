@@ -1,0 +1,24 @@
+.side-menu{
+    background-color: white;
+    height: 100vh;
+    max-width: 5.7rem;
+    padding-left: 1rem !important;
+}
+
+.side-menu > ul {
+    list-style-type: none;
+}
+
+.li-menu {
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+}
+
+.li-menu:hover {
+    background-color: #f0f4ff;
+    border-radius: 50px;
+}
+
+.back-icon{
+    color: #5b5d5fad
+}
