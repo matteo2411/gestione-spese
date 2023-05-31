@@ -20,14 +20,26 @@
     height: 4.5rem; 
 }
 
+.img-principal{
+    font-size: 2rem !important;
+}
+
+.img-principal:hover {
+    background-color: #f0f4ff;
+    border: 1px solid #384277;
+    border-radius: 60px;
+    padding: 0.2rem;
+}
+
 .title-app{
-    margin-left: 5rem;
+    margin-left: 1rem;
     padding: 0.5rem;
 }
 
 .title-app > .h1{
     font-weight: 600;
     padding: 0.5rem;
+    margin-left: 1.5rem;
 }
 
 .title-app > .h1:hover{
