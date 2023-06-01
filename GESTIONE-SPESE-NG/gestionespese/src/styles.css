@@ -161,3 +161,7 @@ p-overlay > div {
 .p-treeselect-label{
     padding : 0 !important;
 }
+
+.grassetto{
+    font-weight: 500;
+}

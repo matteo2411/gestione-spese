@@ -81,6 +81,13 @@
                 </div>
             </div>
         </div>
+        <div class="mt-2">
+            <span *ngIf="(!listaInvestimenti || !listaInvestimenti.length) && mostraMessaggioNoInvestimenti">
+                <span class="grassetto">Attenzione: </span>
+                Nessun fondo di investimento associato all'utente selezionato, utilizzare la funzione apposita per associare il primo fondo d'investimento oppure
+                <a [routerLink]="['/investimenti/associa-utente']" [queryParams]="{'idParent': '2', 'indietro': 0}" routerLinkActive="active">clicca qui</a>
+            </span>
+        </div>
     </div>
 </div>
 

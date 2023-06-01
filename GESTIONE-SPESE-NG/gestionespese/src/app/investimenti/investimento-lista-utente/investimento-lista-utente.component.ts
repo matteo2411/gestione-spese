@@ -32,6 +32,7 @@ export class InvestimentoListaUtenteComponent implements OnInit {
   tipo : String;
   valoreTotale = 0;
   spesa = 0;
+  mostraMessaggioNoInvestimenti = false;
 
   constructor(private commonService : CommonDataService, private modalService : NgbModal) {
     this.listaInvestimentiForm = new UntypedFormGroup({
@@ -83,11 +84,12 @@ export class InvestimentoListaUtenteComponent implements OnInit {
   }
 
   ricercaInvestimenti() : void{
+    this.mostraMessaggioNoInvestimenti = false;
     this.valoreTotale = 0;
     this.commonService.resetMessages();
     this.commonService.showSpinner();
     this.commonService.callApiPost(GlobalConstants.listaInvestimentiValidiUtente, {
-      "nomeUtente" : this.listaInvestimentiForm.value.utenteForm
+      "idUtente" : this.listaInvestimentiForm.value.utenteForm
     }).subscribe((data)=>{
       this.commonService.hideSpinner();
       if(data.success){
@@ -102,7 +104,7 @@ export class InvestimentoListaUtenteComponent implements OnInit {
         this.commonService.addDangerMessage("Errore nel recupero degli investimenti a sistema dell'utente",true);
       }
       if(!this.listaInvestimenti || !this.listaInvestimenti.length){
-        this.commonService.addDangerMessage("Nessun investimento trovato",true);
+        this.mostraMessaggioNoInvestimenti = true;
       }
     },(error)=>{
       this.commonService.hideSpinner();
