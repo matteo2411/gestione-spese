@@ -7,6 +7,7 @@ export class GlobalConstants {
     public static ricercaSpese: string = "/gestione-spese-api/spesa/ricerca";
     public static riepilogoSpese: string = "/gestione-spese-api/spesa/riepilogo-spese";
     public static ultimaSpesa: string = "/gestione-spese-api/spesa/ultima";
+    public static deleteSpesa: string = "/gestione-spese-api/spesa/delete/";
     
     public static creaCategoria: string = "/gestione-spese-api/categoria/crea";
     public static listaCategorie: string = "/gestione-spese-api/categoria/get-validi";

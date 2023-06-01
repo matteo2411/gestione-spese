@@ -47,9 +47,12 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { CardModule } from 'primeng/card';
 import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 import { BreadcrumbComponent } from './common/breadcrumb/breadcrumb.component';
 import { InvestimentoStoricoComponent } from './investimenti/investimento-storico/investimento-storico.component';
+import { MessageService } from 'primeng/api';
 
 registerLocaleData(localeIT);
 
@@ -73,7 +76,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     return null;
   }
 
-  getMonth(month : Number) : String {
+  getMonth(month : any) : String {
     if(month>9){
       return ''+month;
     }else{
@@ -81,7 +84,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     }
   }
 
-  getDay(day : Number) : String {
+  getDay(day : any) : String {
     if(day>9){
       return ''+day;
     }else{
@@ -114,7 +117,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     return null;
   }
 
-  getMonth(month : Number) : String {
+  getMonth(month : any) : String {
     if(month>9){
       return ''+month;
     }else{
@@ -122,7 +125,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     }
   }
 
-  getDay(day : Number) : String {
+  getDay(day : any) : String {
     if(day>9){
       return ''+day;
     }else{
@@ -153,7 +156,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     BreadcrumbModule,
     CardModule,
     TreeModule,
-    TreeSelectModule
+    TreeSelectModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
   declarations: [
     AppComponent,
@@ -184,7 +189,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: LOCALE_ID, useValue: 'it-IT' } ,
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
+    MessageService
   ],
   bootstrap: [AppComponent] 
 })

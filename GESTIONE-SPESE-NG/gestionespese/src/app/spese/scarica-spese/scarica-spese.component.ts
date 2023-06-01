@@ -1,16 +1,17 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { faArrowLeft, faCalendarAlt, faChartPie, faFileExcel, faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCalendarAlt, faChartPie, faFileExcel, faFilter, faSearch, faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MegaMenuItem } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MegaMenuItem, MessageService } from 'primeng/api';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
 @Component({
   selector: 'app-scarica-spese',
   templateUrl: './scarica-spese.component.html',
-  styleUrls: ['./scarica-spese.component.css']
+  styleUrls: ['./scarica-spese.component.css'],
+  providers: [ConfirmationService, MessageService]
 })
 export class ScaricaSpeseComponent implements OnInit {
 
@@ -27,6 +28,8 @@ export class ScaricaSpeseComponent implements OnInit {
   faCalendar = faCalendarAlt;
   faExcel = faFileExcel;
   faBack = faArrowLeft;
+  faTimes = faTimes;
+  faEdit = faEdit;
 
   page = 1;
   pageSize = 6;
@@ -57,7 +60,9 @@ export class ScaricaSpeseComponent implements OnInit {
 
   constructor(private commonService : CommonDataService,
               public location: Location,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal,
+              private confirmationService: ConfirmationService, 
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.getUtenti();
@@ -262,5 +267,43 @@ export class ScaricaSpeseComponent implements OnInit {
       }
     })
     return children;
+  }
+
+  modifica(spesa: any){
+
+  }
+
+  cancella(spesa: any){
+    let descrizione = spesa.descrizioneCustom || spesa.descrizione;
+
+    this.confirmationService.confirm({
+      message: 'Stai eliminando definitivamente la spesa '+descrizione+' del giorno '+spesa.dataContabile+', sicuro di voler procedere? L\'operazione è irreversibile',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.commonService.showSpinner();
+        this.commonService.callApiDelete(GlobalConstants.deleteSpesa+spesa.id).subscribe((data)=>{
+          this.commonService.hideSpinner();
+          if(data.success){
+            this.commonService.addSuccessMessage("Spesa eliminata correttamente",false);
+            var index = this.listaSpese.indexOf(spesa);
+            if (index !== -1) {
+              this.listaSpese.splice(index, 1);
+              this.refreshData(true);
+            }
+          }else{
+            this.commonService.addDangerMessage("Errore nell'eliminazione della spesa ",false);
+          }
+        },(error)=>{
+          this.commonService.hideSpinner();
+          this.commonService.addDangerMessage("Errore nell'eliminazione della spesa ",false);
+        })
+      },
+      reject: (type: Number) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  break;
+          }
+      }
+    });
   }
 }

@@ -17,6 +17,9 @@ import javax.persistence.Table;
 import javax.sql.rowset.serial.SerialClob;
 import javax.sql.rowset.serial.SerialException;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import it.progetticasa.gestorespese.dto.SpesaDto;
@@ -54,7 +57,7 @@ public class Spesa implements Comparable {
   @Lob
   private Clob descrizioneEstesa;
 
-  @ManyToOne(cascade=CascadeType.ALL)
+  @ManyToOne
   @JoinColumn(name = "FK_TIPOLOGIA")
   private Tipologia tipologia;
   @ManyToOne
