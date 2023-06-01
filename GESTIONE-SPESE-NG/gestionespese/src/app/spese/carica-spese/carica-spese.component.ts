@@ -15,8 +15,6 @@ export class CaricaSpeseComponent implements OnInit {
   fileToUpload: any = null;
   formData: FormData = new FormData();
   listaSpese: any[] = [];
-  listaSpeseVisibile: any[] = [];
-  listaSize = 0;
   listaCategorieAll : any[] = []; 
   listaCategorie : any[] = []; 
   listaTipologie : any[] = []; 
@@ -24,14 +22,8 @@ export class CaricaSpeseComponent implements OnInit {
   listaAccount : any[] = []; 
   elementoSelezionato : any = {};
 
-  page = 1;
-  pageSize = 6;
   faComment = faCommentDots;
   faDownload = faCloudDownloadAlt;
-  faEdit = faEdit;
-  faSave = faSave;
-
-  faTimes = faTimes;
   inserimento = false;
 
   caricaSpeseForm = new UntypedFormGroup({
@@ -186,7 +178,6 @@ export class CaricaSpeseComponent implements OnInit {
       uscite : ''
     });
     this.caricaSpeseForm.disable();
-    this.refreshData();
   }
 
   editable(id: Number){
@@ -210,7 +201,6 @@ export class CaricaSpeseComponent implements OnInit {
         this.inserimento = true;
         this.caricaSpeseForm.disable();
         this.listaSpese = data.oggetto;
-        this.listaSize = this.listaSpese.length;
 
         const elementiDuplicati = this.listaSpese.filter((item)=> item.spesaPresente);
         let indexWithError = '';
@@ -233,17 +223,13 @@ export class CaricaSpeseComponent implements OnInit {
           }
         })
 
-        this.refreshData();
       }else{
         this.listaSpese = [];
-        this.listaSize = 0;
         this.commonService.addDangerMessage("Errore nell'elaborazione delle spese",true);
-        this.refreshData();
       }
     },(error)=>{
       this.commonService.hideSpinner();
       this.commonService.addDangerMessage("Errore nell'elaborazione delle spese",true);
-      this.refreshData();
     })
   }
 
@@ -270,11 +256,6 @@ export class CaricaSpeseComponent implements OnInit {
     return categoriaRet;
   }
   
-  refreshData() {
-    this.listaSpeseVisibile = this.listaSpese
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
-
   annulla() : void{
     this.inserimento = false;
     this.caricaSpeseForm.patchValue({
@@ -290,9 +271,7 @@ export class CaricaSpeseComponent implements OnInit {
 
   cancella(id : number): void {
     this.listaSpese = this.listaSpese.filter((item,index)=>index!==id);
-    this.listaSize = this.listaSpese.length;
-    this.refreshData();
-    if(this.listaSize === 0){
+    if(this.listaSpese.length === 0){
       this.commonService.resetMessages();
       this.annulla();
     }
