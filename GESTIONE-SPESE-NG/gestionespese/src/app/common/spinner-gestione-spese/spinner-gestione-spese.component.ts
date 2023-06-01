@@ -10,21 +10,14 @@ import { CommonDataService } from '../common-data.service';
 export class SpinnerGestioneSpeseComponent {
 
   @ViewChild('content') content : any;
-  count: number = 0;
 
   constructor(private modalService: NgbModal, private commonService : CommonDataService) {
 
     this.commonService.checkShowSpinner().subscribe(() => {
-      this.count++
-      if(this.count > 0){
-        this.openSpinner();
-      }
+      this.openSpinner();
     });
     this.commonService.checkHideSpinner().subscribe(() => {
-      this.count--;
-      if(this.count <= 0){
-        this.closeSpinner();
-      }
+      this.closeSpinner();
     });
   }
 

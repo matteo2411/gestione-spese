@@ -66,6 +66,8 @@ h2{
 .badge-spese {
     color: white !important;
     font-size: 95% !important;
+    border-radius: 0.4rem !important;
+    padding: 0.5rem;
 }
 
 .page-item.active .page-link {
