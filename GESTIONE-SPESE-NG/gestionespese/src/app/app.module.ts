@@ -49,6 +49,7 @@ import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
 
 import { BreadcrumbComponent } from './common/breadcrumb/breadcrumb.component';
+import { InvestimentoStoricoComponent } from './investimenti/investimento-storico/investimento-storico.component';
 
 registerLocaleData(localeIT);
 
@@ -177,7 +178,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CruscottoSpeseComponent,
     SpinnerGestioneSpeseComponent,
     SideNavbarComponent,
-    BreadcrumbComponent
+    BreadcrumbComponent,
+    InvestimentoStoricoComponent
   ],
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},

@@ -3,6 +3,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { faBox, faCalendar, faMinus, faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subject } from 'rxjs';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
@@ -13,9 +14,9 @@ import { GlobalConstants } from 'src/app/globalConstants';
 })
 export class InvestimentoListaUtenteComponent implements OnInit {
 
+  storicoEventSubject: Subject<any> = new Subject<any>();
   listaInvestimentiForm : UntypedFormGroup;
   listaInvestimenti : any[] = [];
-  listaInvestimentoStorico : any[] = [];
   listaUtenti : any[] = [];
   faSearch = faSearch;
   faPlus = faPlus;
@@ -148,37 +149,8 @@ export class InvestimentoListaUtenteComponent implements OnInit {
     });
   }
 
-  openStorico(content : any, elementoSelezionato : any) {
-    this.commonService.resetMessages();
-    this.commonService.showSpinner();
-
-    let inputJson = {
-      "utente": {
-        "id": elementoSelezionato.utente.id
-      },
-      "investimento": {
-          "id": elementoSelezionato.investimento.id
-      }
-    }
-
-    this.commonService.callApiPost(GlobalConstants.listaInvestimentiUtenteStorici, inputJson).subscribe((data)=>{
-      this.commonService.hideSpinner();
-      if(data.success){
-        this.listaInvestimentoStorico = data.oggetto;
-        const options = { 
-          ariaLabelledBy: 'storico-investimento',
-          size: 'xl',
-          windowClass: 'custom-modal-window', 
-          backdropClass: 'custom-modal-backdrop' 
-        };
-        this.modalService.open(content, options);
-      }else{
-        this.commonService.addDangerMessage("Errore nel recupero dello storico",true);
-      }
-    },(error)=>{
-      this.commonService.hideSpinner();
-      this.commonService.addDangerMessage("Errore nel recupero dello storico",true);
-    })
+  openStorico(elementoSelezionato : any) {
+    this.storicoEventSubject.next(elementoSelezionato);
   }
 
   getAllStorici(){

@@ -55,7 +55,7 @@
                         <td>{{ item.investimento.quotaAttuale  | number: '1.0-4' }}</td>
                         <td>{{ (item.quoteTotali * item.investimento.quotaAttuale)  | number: '1.0-2' }}</td>
                         <td>
-                            <a class="icon-table" (click)="openStorico(contentstorico, item)">
+                            <a class="icon-table" (click)="openStorico(item)">
                                 <fa-icon [icon]="faStorico" class="primary"></fa-icon>
                             </a>
                             <a class="icon-table" (click)="open(content, item, 'Acquisto')">
@@ -135,42 +135,4 @@
     </div>
 </ng-template>
 
-<ng-template #contentstorico let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title primary" id="storico-investimento">Storico Investimento</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-        <div class="p-3" *ngIf="listaInvestimentoStorico && listaInvestimentoStorico.length > 0">    
-            <h2 class="justify-left"> Risultati </h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Investimento</th>
-                        <th scope="col">Quote</th>
-                        <th scope="col">Quotazione</th>
-                        <th scope="col">Entrata</th>
-                        <th scope="col">Uscita</th>
-                        <th scope="col">Data operazione</th>
-                        <th scope="col">Tipo operazione</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item, of listaInvestimentoStorico; index as i">
-                        <th scope="row">{{ (i + 1) }}</th>
-                        <td>{{ item.utenteInvestimento.investimento.nomeInvestimento }}</td>
-                        <td>{{ item.nrQuote  | number: '1.0-4' }}</td>
-                        <td>{{ item.quotazione  | number: '1.0-4' }}</td>
-                        <td>{{ item.entrata | number: '1.0-2' }}</td>
-                        <td>{{ item.uscita | number: '1.0-2' }}</td>
-                        <td>{{ item.dataOperazione }}</td>
-                        <td>{{ item.operazione }}</td>
-                    </tr>
-                </tbody>
-            </table>   
-        </div>
-    </div>
-</ng-template>
+<app-investimento-storico [events]="storicoEventSubject.asObservable()"></app-investimento-storico>

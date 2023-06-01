@@ -1,0 +1,57 @@
+<ng-template #contentstorico let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title primary" id="storico-investimento">Storico Investimento</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Chiudi')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="p-3" *ngIf="listaInvestimentoStorico && listaInvestimentoStorico.length > 0">    
+            <h2 class="justify-left"> Movimenti </h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Investimento</th>
+                        <th scope="col">Quote</th>
+                        <th scope="col">Quotazione</th>
+                        <th scope="col">Entrata</th>
+                        <th scope="col">Uscita</th>
+                        <th scope="col">Data operazione</th>
+                        <th scope="col">Tipo operazione</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item, of listaInvestimentoStoricoVisibile; index as i">
+                        <th scope="row">{{ (i + 1) }}</th>
+                        <td>{{ item.utenteInvestimento.investimento.nomeInvestimento }}</td>
+                        <td>{{ item.nrQuote  | number: '1.0-4' }}</td>
+                        <td>{{ item.quotazione  | number: '1.0-4' }}</td>
+                        <td>{{ item.entrata | number: '1.0-2' }}</td>
+                        <td>{{ item.uscita | number: '1.0-2' }}</td>
+                        <td>{{ item.dataOperazione }}</td>
+                        <td>{{ item.operazione }}</td>
+                    </tr>
+                </tbody>
+            </table>   
+
+            <div class="d-flex justify-content-between p-2">
+                <ngb-pagination 
+                    [maxSize]="10" 
+                    [boundaryLinks]="true" 
+                    [collectionSize]="listaSize" 
+                    [(page)]="page" 
+                    [pageSize]="pageSize" 
+                    (pageChange)="refreshData()"
+                >
+                </ngb-pagination>
+                
+                <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
+                    <option [ngValue]="6">6 elementi per pagina</option>
+                    <option [ngValue]="8">8 elementi per pagina</option>
+                    <option [ngValue]="10">10 elementi per pagina</option>
+                </select>
+            </div> 
+        </div>
+    </div>
+</ng-template>
