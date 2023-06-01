@@ -18,6 +18,7 @@ public class InvestimentoDto {
 	Investimento investimento;
 	Double nrQuote;
 	String nomeUtente;
+	Integer idUtente;
     @Pattern(regexp = "ACQUISTO|VENDITA| ")
 	String operazione = "";
     @JsonFormat(pattern = "dd-MM-yyyy")	

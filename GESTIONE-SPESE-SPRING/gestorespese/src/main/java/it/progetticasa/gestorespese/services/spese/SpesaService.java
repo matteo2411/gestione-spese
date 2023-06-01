@@ -63,7 +63,7 @@ public class SpesaService {
         	    .sorted()
         		.collect(Collectors.toList());
     }
-	public SpesaMeseDto spesePerMese(int mese, SpesaMeseDto spesaInput) throws ParseException, SerialException, SQLException {
+	public SpesaMeseDto spesePerMese(int mese, SpesaMeseDto spesaInput) throws ParseException, SerialException, SQLException, Exception {
 		SpesaDto spesaFilter = new SpesaDto();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		spesaFilter.setDataContabileDa(Utility.convertDate(sdf.parse("01/"+mese+"/"+spesaInput.getAnno())));

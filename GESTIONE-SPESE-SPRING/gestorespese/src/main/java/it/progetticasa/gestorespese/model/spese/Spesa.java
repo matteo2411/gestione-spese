@@ -93,8 +93,10 @@ public class Spesa implements Comparable {
 		Spesa s = (Spesa)o;
 		if(this.dataContabile.after(s.getDataContabile())) {
 			return -1;
-		}else {
+		}else if(s.getDataContabile().after(this.dataContabile)) {
 			return 1;
+		}else {
+			return 0;
 		}
 	}
 

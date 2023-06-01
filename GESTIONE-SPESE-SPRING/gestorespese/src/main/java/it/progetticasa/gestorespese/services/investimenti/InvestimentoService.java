@@ -104,7 +104,7 @@ public class InvestimentoService {
 		return utenteInvestimento;
 	}
 	public List<UtenteInvestimento> getValidiUtente(InvestimentoDto investimentoDto) throws SerialException, SQLException {
-		User user = userService.findByName(investimentoDto.getNomeUtente());
+		User user = userService.findUser(investimentoDto.getIdUtente());
 		UtenteInvestimento utenteInvestimento = new UtenteInvestimento(user, null);
 		return utenteInvestimentoService.ricerca(utenteInvestimento);
 	}
