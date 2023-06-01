@@ -12,16 +12,11 @@ import { GlobalConstants } from 'src/app/globalConstants';
 export class InvestimentoStoricoComponent {
   private eventsSubscription: Subscription;
   listaInvestimentoStorico : any[] = [];
-  listaInvestimentoStoricoVisibile : any[] = [];
-  page = 1;
-  pageSize = 6;
-  listaSize = 0;
 
   @Input() events: Observable<void>;
   @ViewChild('contentstorico', { static: true }) modal: ElementRef;
 
-  constructor(private commonService : CommonDataService, private modalService : NgbModal) {
-  }
+  constructor(private commonService : CommonDataService, private modalService : NgbModal) {}
   
   ngOnInit(){
     this.eventsSubscription = this.events.subscribe((data) => this.openModal(data));
@@ -59,17 +54,10 @@ export class InvestimentoStoricoComponent {
       }else{
         this.commonService.addDangerMessage("Errore nel recupero dello storico",true);
       }
-      this.refreshData();
     },(error)=>{
       this.commonService.hideSpinner();
       this.commonService.addDangerMessage("Errore nel recupero dello storico",true);
     })
-  }
-
-  refreshData() {
-    this.listaSize = this.listaInvestimentoStorico.length;
-    this.listaInvestimentoStoricoVisibile = this.listaInvestimentoStorico
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
   }
 
 }

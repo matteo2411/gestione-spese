@@ -3,37 +3,45 @@
         <h2 class="justify-left"> Storico Spese </h2>
 
         <div class="p-3">       
-            <table class="table table-striped" *ngIf="listaStorico && listaStorico.length > 0">
-                <thead>
+            <p-table
+                *ngIf="listaStorico && listaStorico.length > 0"
+                [value]="listaStorico"
+                [paginator]="true"
+                (sortFunction)="customSort($event)" 
+                [customSort]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Mostrati da {first} a {last} di {totalRecords} righe"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+            >
+                <ng-template pTemplate="header">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Descrizione</th>
-                        <th scope="col">Account</th>
-                        <th scope="col">Data</th>
-                        <th scope="col">Utente</th>
+                        <th>#</th>
+                        <th pSortableColumn="descrizione">
+                            Descrizione<p-sortIcon field="descrizione"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="account.nomeAccount">
+                            Account<p-sortIcon field="account.nomeAccount"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="dataOperazione">
+                            Data<p-sortIcon field="dataOperazione"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="utente.name">
+                            Utente<p-sortIcon field="utente.name"></p-sortIcon>
+                        </th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item, of listaStoricoVisibile; index as i">
-                        <th scope="row">{{ (i + 1)+((page-1)*pageSize) }}</th>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                    <tr>
+                        <td class="grassetto">{{ rowIndex + 1 }}</td>
                         <td>{{ item.descrizione }}</td>
                         <td>{{ item.account?.nomeAccount }}</td>
                         <td>{{ item.dataOperazione }}</td>
                         <td>{{ item.utente?.name }}</td>
                     </tr>
-                </tbody>
-            </table>   
-
-            <div class="d-flex justify-content-between p-2" *ngIf="listaStorico && listaStorico.length > 0">
-                <ngb-pagination [collectionSize]="listaSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshData()">
-                </ngb-pagination>
-                
-                <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
-                    <option [ngValue]="6">6 elementi per pagina</option>
-                    <option [ngValue]="8">8 elementi per pagina</option>
-                    <option [ngValue]="10">10 elementi per pagina</option>
-                </select>
-            </div> 
+                </ng-template>
+            </p-table>   
         
             <span *ngIf="!listaStorico || !listaStorico.length">
                 Nessuna spesa presente nello storico

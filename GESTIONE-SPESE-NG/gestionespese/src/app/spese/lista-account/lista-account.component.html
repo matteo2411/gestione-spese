@@ -1,17 +1,26 @@
 <div class="p-3">
     <div class="box">
         <h2 class="justify-left"> Lista account </h2>
-        <table class="table table-striped" *ngIf="listaAccountVisibili && listaAccountVisibili.length">
-            <thead>
+        <p-table
+            [value]="listaAccount"
+            *ngIf="listaAccount && listaAccount.length"
+            [paginator]="true"
+            [rows]="5"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Mostrati da {first} a {last} di {totalRecords} righe"
+            [rowsPerPageOptions]="[5, 10, 25, 50]"
+        >
+            <ng-template pTemplate="header">
                 <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nome account</th>
-                <th scope="col">Azioni</th>
+                    <th>#</th>
+                    <th>Nome account</th>
+                    <th>Azioni</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item, of listaAccountVisibili; index as i">
-                    <th scope="row">{{ i + 1 }}</th>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                <tr>
+                    <th scope="row">{{ rowIndex + 1 }}</th>
                     <td>{{ item.nomeAccount }}</td>
                     <td>
                         <a class="icon-table" (click)="cancella(item.id)">
@@ -19,21 +28,10 @@
                         </a>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            </ng-template>
+        </p-table>
 
-        <div class="d-flex justify-content-between p-2" *ngIf="listaAccountVisibili && listaAccountVisibili.length">
-            <ngb-pagination [collectionSize]="listaSize" [(page)]="page" [pageSize]="pageSize" (pageChange)="refreshData()">
-            </ngb-pagination>
-            
-            <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
-                <option value="6">6 elementi per pagina</option>
-                <option value="8">8 elementi per pagina</option>
-                <option value="10">10 elementi per pagina</option>
-            </select>
-        </div>  
-        
-        <span *ngIf="!listaAccountVisibili || !listaAccountVisibili.length">
+        <span *ngIf="!listaAccount || !listaAccount.length">
             Nessun account presente, utilizzare la funzione apposita per creare il primo account oppure
             <a [routerLink]="['/account/crea']" [queryParams]="{'idParent': '1-6', 'indietro': 0}" routerLinkActive="active">clicca qui</a>
         </span>

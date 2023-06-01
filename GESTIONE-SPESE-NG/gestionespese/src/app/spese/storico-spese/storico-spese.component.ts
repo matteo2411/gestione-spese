@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SortEvent } from 'primeng/api';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
@@ -13,7 +14,6 @@ export class StoricoSpeseComponent implements OnInit {
   pageSize = 6;
   listaSize = 0;
   listaStorico : any[] = [];
-  listaStoricoVisibile : any[] = [];
 
   constructor(private commonService : CommonDataService){ }
 
@@ -48,12 +48,10 @@ export class StoricoSpeseComponent implements OnInit {
       if(data.success){
         this.listaStorico = data.oggetto;
         this.listaSize = this.listaStorico.length;
-        this.refreshData();
       }else{
         this.listaStorico = [];
         this.listaSize = 0;
         this.commonService.addDangerMessage("Errore nel recupero dello storico",true);
-        this.refreshData();
       }
     },(error)=>{
       this.commonService.hideSpinner();
@@ -61,10 +59,29 @@ export class StoricoSpeseComponent implements OnInit {
     })
   }
 
-  
-  refreshData() {
-    this.listaStoricoVisibile = this.listaStorico
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+  customSort(event: SortEvent) {
+    if(event.data){
+      event.data.sort((data1, data2) => {
+        if(event.field && event.order){
+          let value1 = this.commonService.getPropByString(data1, event.field);
+          let value2 = this.commonService.getPropByString(data2, event.field);
+          let result = null;
+
+          if (value1 == null && value2 != null) result = -1;
+          else if (value1 != null && value2 == null) result = 1;
+          else if (value1 == null && value2 == null) result = 0;
+          else if (event.field!='dataOperazione') result = value1.localeCompare(value2);
+          else{
+            result = this.commonService.convertStringToData(value1) < this.commonService.convertStringToData(value2) ? -1 :
+                     this.commonService.convertStringToData(value1) > this.commonService.convertStringToData(value2) ? 1 : 0
+          }
+
+          return event.order * result;
+        }else{
+          return 0;
+        }
+    });
+    }
   }
 
 }

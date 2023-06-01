@@ -67,4 +67,28 @@ export class CommonDataService {
     this.items = items;
   }
 
+  convertStringToData(dateString: any){
+    var dateParts = dateString.split("-");
+    return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
+  }
+
+  getPropByString(obj: any, propString: String) {
+    if (!propString)
+      return obj;
+  
+    var prop, props = propString.split('.');
+  
+    for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
+      prop = props[i];
+  
+      var candidate = obj[prop];
+      if (candidate !== undefined) {
+        obj = candidate;
+      } else {
+        break;
+      }
+    }
+    return obj[props[i]];
+  }
+
 }

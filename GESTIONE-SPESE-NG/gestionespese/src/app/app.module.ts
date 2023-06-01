@@ -49,6 +49,7 @@ import { TreeModule } from 'primeng/tree';
 import { TreeSelectModule } from 'primeng/treeselect';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
 
 import { BreadcrumbComponent } from './common/breadcrumb/breadcrumb.component';
 import { InvestimentoStoricoComponent } from './investimenti/investimento-storico/investimento-storico.component';
@@ -158,7 +159,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     TreeModule,
     TreeSelectModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    TableModule
   ],
   declarations: [
     AppComponent,

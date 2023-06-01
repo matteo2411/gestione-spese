@@ -11,10 +11,6 @@ import { GlobalConstants } from 'src/app/globalConstants';
 export class ListaAccountComponent implements OnInit {
 
   listaAccount : any[] = [];
-  listaAccountVisibili : any[] = [];
-  page = 1;
-  pageSize = 6;
-  listaSize = 0;
   faTimes = faTimes;
 
   constructor(private commonService : CommonDataService) { }
@@ -58,7 +54,6 @@ export class ListaAccountComponent implements OnInit {
         this.listaAccount = [];
         this.commonService.addDangerMessage("Errore nel recupero degli account",true);
       }
-      this.refreshData();
     },(error)=>{
       this.commonService.hideSpinner();
       this.commonService.addDangerMessage("Errore nel recupero degli account",true);
@@ -81,11 +76,5 @@ export class ListaAccountComponent implements OnInit {
       this.commonService.addDangerMessage("Errore nell'eliminazione dell'account",true);
     })
   }
-
   
-  refreshData() {
-    this.listaSize = this.listaAccount.length;
-    this.listaAccountVisibili = this.listaAccount
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
 }

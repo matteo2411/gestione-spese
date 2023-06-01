@@ -8,22 +8,31 @@
     <div class="modal-body">
         <div class="p-3" *ngIf="listaInvestimentoStorico && listaInvestimentoStorico.length > 0">    
             <h2 class="justify-left"> Movimenti </h2>
-            <table class="table table-striped">
-                <thead>
+            <p-table
+                *ngIf="listaInvestimentoStorico && listaInvestimentoStorico.length > 0"
+                [value]="listaInvestimentoStorico"
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Mostrati da {first} a {last} di {totalRecords} righe"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+            >
+                <ng-template pTemplate="header">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Investimento</th>
-                        <th scope="col">Quote</th>
-                        <th scope="col">Quotazione</th>
-                        <th scope="col">Entrata</th>
-                        <th scope="col">Uscita</th>
-                        <th scope="col">Data operazione</th>
-                        <th scope="col">Tipo operazione</th>
+                        <th>#</th>
+                        <th>Investimento</th>
+                        <th>Quote</th>
+                        <th>Quotazione</th>
+                        <th>Entrata</th>
+                        <th>Uscita</th>
+                        <th>Data operazione</th>
+                        <th>Tipo operazione</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item, of listaInvestimentoStoricoVisibile; index as i">
-                        <th scope="row">{{ (i + 1) }}</th>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                    <tr>
+                        <td class="grassetto">{{ (rowIndex + 1) }}</td>
                         <td>{{ item.utenteInvestimento.investimento.nomeInvestimento }}</td>
                         <td>{{ item.nrQuote  | number: '1.0-4' }}</td>
                         <td>{{ item.quotazione  | number: '1.0-4' }}</td>
@@ -32,26 +41,8 @@
                         <td>{{ item.dataOperazione }}</td>
                         <td>{{ item.operazione }}</td>
                     </tr>
-                </tbody>
-            </table>   
-
-            <div class="d-flex justify-content-between p-2">
-                <ngb-pagination 
-                    [maxSize]="10" 
-                    [boundaryLinks]="true" 
-                    [collectionSize]="listaSize" 
-                    [(page)]="page" 
-                    [pageSize]="pageSize" 
-                    (pageChange)="refreshData()"
-                >
-                </ngb-pagination>
-                
-                <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData()">
-                    <option [ngValue]="6">6 elementi per pagina</option>
-                    <option [ngValue]="8">8 elementi per pagina</option>
-                    <option [ngValue]="10">10 elementi per pagina</option>
-                </select>
-            </div> 
+                </ng-template>
+            </p-table>  
         </div>
     </div>
 </ng-template>

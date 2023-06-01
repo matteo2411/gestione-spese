@@ -50,13 +50,13 @@ h2{
 }
 
 .icon-table {
-    padding: 3px;
-    border-radius: 3px;
+    padding: 4px;
+    border-radius: 11px;
     cursor : pointer ;
 }
 
 .icon-table:hover {
-    border: 1px solid blue;
+    border: 1.5px solid black;
 }
 
 .app-selezionata {
@@ -166,4 +166,10 @@ p-overlay > div {
 
 .grassetto{
     font-weight: 500;
+}
+
+.box-msg-pst{
+    border: 2px solid #384277;
+    border-radius: 9px;
+    padding: 2rem;
 }

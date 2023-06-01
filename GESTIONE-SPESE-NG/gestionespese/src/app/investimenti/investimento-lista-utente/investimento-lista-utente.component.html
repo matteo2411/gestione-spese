@@ -36,38 +36,46 @@
 
         <div *ngIf="listaInvestimenti && listaInvestimenti.length > 0">    
             <h2 class="justify-left"> Risultati </h2>
-            <table class="table table-striped">
-                <thead>
+            <p-table
+                [value]="listaInvestimenti"
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Mostrati da {first} a {last} di {totalRecords} righe"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+            >
+                <ng-template pTemplate="header">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Investimento</th>
-                        <th scope="col">Quote Totali</th>
-                        <th scope="col">Quotazione Attuale</th>
-                        <th scope="col">Valore Attuale</th>
-                        <th scope="col">Azioni</th>
+                        <th>#</th>
+                        <th>Investimento</th>
+                        <th>Quote Totali</th>
+                        <th>Quotazione Attuale</th>
+                        <th>Valore Attuale</th>
+                        <th>Azioni</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item, of listaInvestimenti; index as i">
-                        <th scope="row">{{ (i + 1) }}</th>
+                </ng-template>
+                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                    <tr>
+                        <td class="grassetto">{{ rowIndex + 1 }}</td>
                         <td>{{ item.investimento.nomeInvestimento }}</td>
                         <td>{{ item.quoteTotali  | number: '1.0-4' }}</td>
                         <td>{{ item.investimento.quotaAttuale  | number: '1.0-4' }}</td>
                         <td>{{ (item.quoteTotali * item.investimento.quotaAttuale)  | number: '1.0-2' }}</td>
                         <td>
-                            <a class="icon-table" (click)="openStorico(item)">
-                                <fa-icon [icon]="faStorico" class="primary"></fa-icon>
+                            <a (click)="openStorico(item)" pTooltip="Apri Storico">
+                                <i class="pi pi-book primary fa-2x pointer icon-table"></i>
                             </a>
-                            <a class="icon-table" (click)="open(content, item, 'Acquisto')">
-                                <fa-icon [icon]="faPlus" class="primary"></fa-icon>
+                            <a (click)="open(content, item, 'Acquisto')" pTooltip="Acquista Quote">
+                                <i class="pi pi-plus primary fa-2x pointer icon-table"></i>
                             </a>
-                            <a class="icon-table" (click)="open(content, item, 'Vendita')" *ngIf="item.quoteTotali > 0">
-                                <fa-icon [icon]="faMinus" class="icon-danger"></fa-icon>
+                            <a (click)="open(content, item, 'Vendita')" *ngIf="item.quoteTotali > 0" pTooltip="Vendi Quote">
+                                <i class="pi pi-minus icon-danger fa-2x pointer icon-table"></i>
                             </a>
                         </td>
                     </tr>
-                </tbody>
-            </table>   
+                </ng-template>
+            </p-table>
             <div class="row">
                 <div class="col-auto">
                     <span class="badge bg-primary badge-spese">
@@ -81,8 +89,8 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2">
-            <span *ngIf="(!listaInvestimenti || !listaInvestimenti.length) && mostraMessaggioNoInvestimenti">
+        <div class="mt-2 box-msg-pst" *ngIf="(!listaInvestimenti || !listaInvestimenti.length) && mostraMessaggioNoInvestimenti">
+            <span>
                 <span class="grassetto">Attenzione: </span>
                 Nessun fondo di investimento associato all'utente selezionato, utilizzare la funzione apposita per associare il primo fondo d'investimento oppure
                 <a [routerLink]="['/investimenti/associa-utente']" [queryParams]="{'idParent': '2', 'indietro': 0}" routerLinkActive="active">clicca qui</a>

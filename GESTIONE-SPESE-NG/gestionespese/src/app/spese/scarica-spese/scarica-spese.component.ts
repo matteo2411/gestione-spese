@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { faArrowLeft, faCalendarAlt, faChartPie, faFileExcel, faFilter, faSearch, faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmEventType, ConfirmationService, MegaMenuItem, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MegaMenuItem, MessageService, SortEvent } from 'primeng/api';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
@@ -17,7 +17,6 @@ export class ScaricaSpeseComponent implements OnInit {
 
   listaUtenti : any[] = []; 
   listaSpese : any[] = []; 
-  listaSpeseVisibile : any[] = []; 
   listaCategorieAll : any[] = []; 
   listaCategorie : any[] = []; 
   listaAccount : any[] = []; 
@@ -29,11 +28,7 @@ export class ScaricaSpeseComponent implements OnInit {
   faExcel = faFileExcel;
   faBack = faArrowLeft;
   faTimes = faTimes;
-  faEdit = faEdit;
 
-  page = 1;
-  pageSize = 6;
-  listaSize = 0;
   dataContabileForm = '';
   dataValutaForm = '';
 
@@ -61,8 +56,7 @@ export class ScaricaSpeseComponent implements OnInit {
   constructor(private commonService : CommonDataService,
               public location: Location,
               private modalService: NgbModal,
-              private confirmationService: ConfirmationService, 
-              private messageService: MessageService) { }
+              private confirmationService: ConfirmationService,) { }
 
   ngOnInit(): void {
     this.getUtenti();
@@ -176,8 +170,6 @@ export class ScaricaSpeseComponent implements OnInit {
       this.commonService.hideSpinner();
       if(data.success){
         this.listaSpese = data.oggetto;
-        this.listaSize = this.listaSpese.length;
-        this.refreshData(true);
         this.totaleSpese = 0;
         this.datiGrafico=[];
         this.listaCategorieAll.map((item)=>{
@@ -194,10 +186,8 @@ export class ScaricaSpeseComponent implements OnInit {
         }
       }else{
         this.listaSpese = [];
-        this.listaSize = 0;
         this.totaleSpese = 0;
         this.commonService.addDangerMessage("Errore nel recupero delle spese",true);
-        this.refreshData(true);
       }
     },(error)=>{
       this.commonService.hideSpinner();
@@ -205,10 +195,6 @@ export class ScaricaSpeseComponent implements OnInit {
     })
   }
 
-  refreshData(onlyRefresh : any) {
-    this.listaSpeseVisibile = this.listaSpese
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
 
   open(content : any) {
     const options = { 
@@ -233,6 +219,30 @@ export class ScaricaSpeseComponent implements OnInit {
     })
   }
 
+  customSort(event: SortEvent) {
+    if(event.data){
+      event.data.sort((data1, data2) => {
+        if(event.field && event.order){
+          let value1 = this.commonService.getPropByString(data1, event.field);
+          let value2 = this.commonService.getPropByString(data2, event.field);
+          let result = null;
+
+          if (value1 == null && value2 != null) result = -1;
+          else if (value1 != null && value2 == null) result = 1;
+          else if (value1 == null && value2 == null) result = 0;
+          else{
+            result = this.commonService.convertStringToData(value1) < this.commonService.convertStringToData(value2) ? -1 :
+                     this.commonService.convertStringToData(value1) > this.commonService.convertStringToData(value2) ? 1 : 0
+          }
+
+          return event.order * result;
+        }else{
+          return 0;
+        }
+    });
+    }
+  }
+
   changeSelectGrafico(event : any){
     const accountId = event.target.value;
 
@@ -242,8 +252,6 @@ export class ScaricaSpeseComponent implements OnInit {
     })
     this.listaSpese.map((item)=>{
       if(item.account.id == accountId || !accountId || !accountId.length){
-        this.totaleSpese = this.totaleSpese - item.entrate;
-        this.totaleSpese = this.totaleSpese + item.uscite;
         const index = this.labelsGrafico.findIndex((label)=> label === item.categoriaScelta?.nomeCategoria);
         this.datiGrafico[index] = this.datiGrafico[index] + item.uscite - item.entrate;
       }
@@ -269,10 +277,6 @@ export class ScaricaSpeseComponent implements OnInit {
     return children;
   }
 
-  modifica(spesa: any){
-
-  }
-
   cancella(spesa: any){
     let descrizione = spesa.descrizioneCustom || spesa.descrizione;
 
@@ -288,7 +292,6 @@ export class ScaricaSpeseComponent implements OnInit {
             var index = this.listaSpese.indexOf(spesa);
             if (index !== -1) {
               this.listaSpese.splice(index, 1);
-              this.refreshData(true);
             }
           }else{
             this.commonService.addDangerMessage("Errore nell'eliminazione della spesa ",false);

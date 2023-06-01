@@ -14,10 +14,6 @@ export class ListaCategorieComponent implements OnInit {
 
   listaCategorie : any[] = [];
   faTimes = faTimes;
-  listaCategorieVisibili : any[] = [];
-  page = 1;
-  pageSize = 6;
-  listaSize = 0;
 
   files: TreeNode[];
   selectedFile: TreeNode;
@@ -74,7 +70,6 @@ export class ListaCategorieComponent implements OnInit {
         this.listaCategorie = [];
         this.commonService.addDangerMessage("Errore nel recupero delle categorie",true);
       }
-      this.refreshData();
     },(error)=>{
       this.commonService.hideSpinner();
       this.commonService.addDangerMessage("Errore nel recupero delle categorie",true);
@@ -100,12 +95,6 @@ export class ListaCategorieComponent implements OnInit {
     return children;
   }
   
-  refreshData() {
-    this.listaSize = this.listaCategorie.length;
-    this.listaCategorieVisibili = this.listaCategorie
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
-
   eliminaCategoria(){
     this.commonService.resetMessages();
     this.cancella(this.selectedFile.data);

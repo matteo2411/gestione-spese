@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
@@ -16,7 +16,7 @@ export class CruscottoSpeseComponent implements OnInit {
   listaSpese : any[] = []; 
   listaSpeseForm = new UntypedFormGroup({
     utenteForm: new UntypedFormControl(""),
-    annoForm: new UntypedFormControl(new Date().getFullYear())
+    annoForm: new UntypedFormControl(new Date().getFullYear(), Validators.required)
   })
 
   faSearch = faSearch;

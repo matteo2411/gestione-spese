@@ -115,23 +115,35 @@
         </form>
         <div class="p-3" *ngIf="listaSpese && listaSpese.length > 0">    
             <h2 class="justify-left"> Risultati </h2>
-            <table class="table table-striped">
-                <thead>
+            <p-table
+                [value]="listaSpese"
+                [paginator]="true"
+                (sortFunction)="customSort($event)" 
+                [customSort]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                currentPageReportTemplate="Mostrati da {first} a {last} di {totalRecords} righe"
+                [rowsPerPageOptions]="[5, 10, 25, 50]"
+            >
+                <ng-template pTemplate="header">
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Data Contabile</th>
-                        <th scope="col">Data Valuta</th>
-                        <th scope="col">Descrizione</th>
-                        <th scope="col">Entrate</th>
-                        <th scope="col">Uscite</th>
-                        <th scope="col">Account</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Azioni</th>
+                        <th pSortableColumn="dataContabile">
+                            Data Contabile<p-sortIcon field="dataContabile"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="dataValuta">
+                            Data Valuta<p-sortIcon field="dataValuta"></p-sortIcon>
+                        </th>
+                        <th>Descrizione</th>
+                        <th>Entrate</th>
+                        <th>Uscite</th>
+                        <th>Account</th>
+                        <th>Categoria</th>
+                        <th>Azioni</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item, of listaSpeseVisibile; index as i">
-                        <th scope="row">{{ (i + 1)+((page-1)*pageSize) }}</th>
+                </ng-template>
+                <ng-template pTemplate="body" let-item>
+                    <tr>
                         <td>{{ item.dataContabile }}</td>
                         <td>{{ item.dataValuta }}</td>
                         <td [ngbTooltip]="item.descrizioneEstesa" container="body" placement="top">
@@ -145,13 +157,10 @@
                             <a class="icon-table">
                                 <fa-icon [icon]="faTimes" class="primary" (click)="cancella(item)"></fa-icon>
                             </a>
-                            <!-- <a class="icon-table">
-                                <fa-icon [icon]="faEdit" class="primary" (click)="modifica(item)"></fa-icon>
-                            </a> -->
                         </td>
                     </tr>
-                </tbody>
-            </table>   
+                </ng-template>
+            </p-table>
 
             <p-confirmDialog #cd [style]="{width: '50vw'}">
                 <ng-template pTemplate="header">
@@ -163,25 +172,7 @@
                 </ng-template>
             </p-confirmDialog>
 
-            <div class="d-flex justify-content-between p-2">
-                <ngb-pagination 
-                    [maxSize]="10" 
-                    [boundaryLinks]="true" 
-                    [collectionSize]="listaSize" 
-                    [(page)]="page" 
-                    [pageSize]="pageSize" 
-                    (pageChange)="refreshData(false)"
-                >
-                </ngb-pagination>
-                
-                <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (ngModelChange)="refreshData(false)">
-                    <option [ngValue]="6">6 elementi per pagina</option>
-                    <option [ngValue]="8">8 elementi per pagina</option>
-                    <option [ngValue]="10">10 elementi per pagina</option>
-                </select>
-            </div> 
-
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col">
                     <span class="badge rounded-pill bg-primary badge-spese">
                         <strong>Totale spese:</strong>

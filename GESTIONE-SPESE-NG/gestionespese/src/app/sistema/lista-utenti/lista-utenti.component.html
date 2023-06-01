@@ -1,18 +1,27 @@
 <div class="p-3">
     <div class="box">
         <h2 class="justify-left"> Lista utenti </h2>
-        <table class="table table-striped" *ngIf="listaUtenti && listaUtenti.length">
-            <thead>
+        <p-table
+            *ngIf="listaUtenti && listaUtenti.length > 0"
+            [value]="listaUtenti"
+            [paginator]="true"
+            [rows]="5"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Mostrati da {first} a {last} di {totalRecords} righe"
+            [rowsPerPageOptions]="[5, 10, 25, 50]"
+        >
+            <ng-template pTemplate="header">
                 <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nome utente</th>
-                <th scope="col">Email utente</th>
-                <th scope="col">Azioni</th>
+                    <th>#</th>
+                    <th>Nome utente</th>
+                    <th>Email utente</th>
+                    <th>Azioni</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item, of listaUtenti; index as i">
-                    <th scope="row">{{ i + 1 }}</th>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                <tr>
+                    <td class="grassetto">{{ rowIndex + 1 }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.email }}</td>
                     <td>
@@ -21,8 +30,8 @@
                         </a>
                     </td>
                 </tr>
-            </tbody>
-        </table>  
+            </ng-template>
+        </p-table>  
         
         <span *ngIf="!listaUtenti || !listaUtenti.length">
             Nessun utente presente, utilizzare la funzione apposita per creare il primo utente oppure

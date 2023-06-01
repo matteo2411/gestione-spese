@@ -12,10 +12,6 @@ export class ListaTipologieComponent implements OnInit {
 
   listaTipologie : any[] = [];
   faTimes = faTimes;
-  page = 1;
-  pageSize = 6;
-  listaSize = 0;
-  listaTipologieVisibili : any[] = [];
 
   constructor(private commonService : CommonDataService) { }
 
@@ -58,8 +54,6 @@ export class ListaTipologieComponent implements OnInit {
         this.listaTipologie = [];
         this.commonService.addDangerMessage("Errore nel recupero delle tipologie",true);
       }
-      this.listaSize = this.listaTipologie.length;
-      this.refreshData();
     },(error)=>{
       this.commonService.hideSpinner();
       this.commonService.addDangerMessage("Errore nel recupero delle tipologie",true);
@@ -82,11 +76,5 @@ export class ListaTipologieComponent implements OnInit {
       this.commonService.addDangerMessage("Errore nell'eliminazione della tipologia",true);
     })
   }
-
   
-  refreshData() {
-    this.listaTipologieVisibili = this.listaTipologie
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }
-
 }
