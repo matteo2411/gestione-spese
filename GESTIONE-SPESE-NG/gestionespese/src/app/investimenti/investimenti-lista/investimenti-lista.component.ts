@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
-import { faTimes, faPlus, faEdit, faLink } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -14,10 +13,6 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
 export class InvestimentiListaComponent implements OnInit {
 
   listaInvestimenti : any[] = [];
-  faTimes = faTimes;
-  faPlus = faPlus;
-  faEdit = faEdit;
-  faLink = faLink;
   editForm : UntypedFormGroup = new UntypedFormGroup({
     quotazione : new UntypedFormControl(null, Validators.required),
     link : new UntypedFormControl(null, Validators.required)

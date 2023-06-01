@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { faAddressBook, faAddressCard, faBackspace, faBookMedical, faBookReader, faChartLine, faClock, faHistory, faList, faPlus, faTools, faUpload, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { CommonDataService } from '../common-data.service';
 
 @Component({

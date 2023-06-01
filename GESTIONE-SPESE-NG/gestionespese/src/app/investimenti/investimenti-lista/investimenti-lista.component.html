@@ -28,14 +28,14 @@
                     <td>{{ item.quotaAttuale }}</td>
                     <td>{{ item.dataAggiornamento }}</td>
                     <td>
-                        <a class="icon-table" (click)="link(item)" *ngIf="item.url">
-                            <fa-icon [icon]="faLink" class="primary"></fa-icon>
+                        <a (click)="link(item)" pTooltip="Apri Link">
+                          <i class="pi pi-external-link primary pointer icon-table"></i>
                         </a>
-                        <a class="icon-table" (click)="cancella(item.id)">
-                            <fa-icon [icon]="faTimes" class="primary"></fa-icon>
+                        <a (click)="cancella(item.id)" pTooltip="Elimina Investimento">
+                          <i class="pi pi-times primary pointer icon-table"></i>
                         </a>
-                        <a class="icon-table" (click)="open(content,item)">
-                            <fa-icon [icon]="faEdit" class="primary"></fa-icon>
+                        <a (click)="open(content,item)" pTooltip="Modifica Investimento">
+                          <i class="pi pi-pencil primary pointer icon-table"></i>
                         </a>
                     </td>
                 </tr>

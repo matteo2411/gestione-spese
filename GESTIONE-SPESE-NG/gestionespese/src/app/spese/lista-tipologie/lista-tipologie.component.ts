@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from 'src/app/globalConstants';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { CommonDataService } from 'src/app/common/common-data.service';
 
 @Component({
@@ -11,7 +10,6 @@ import { CommonDataService } from 'src/app/common/common-data.service';
 export class ListaTipologieComponent implements OnInit {
 
   listaTipologie : any[] = [];
-  faTimes = faTimes;
 
   constructor(private commonService : CommonDataService) { }
 

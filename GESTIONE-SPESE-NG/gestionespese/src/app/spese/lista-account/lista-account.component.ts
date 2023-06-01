@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
@@ -11,7 +10,6 @@ import { GlobalConstants } from 'src/app/globalConstants';
 export class ListaAccountComponent implements OnInit {
 
   listaAccount : any[] = [];
-  faTimes = faTimes;
 
   constructor(private commonService : CommonDataService) { }
 

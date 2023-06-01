@@ -25,8 +25,8 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.email }}</td>
                     <td>
-                        <a class="icon-table" (click)="cancella(item.id)">
-                            <fa-icon [icon]="faTimes" class="primary"></fa-icon>
+                        <a (click)="cancella(item.id)" pTooltip="Elimina Utente">
+                            <i class="pi pi-times primary pointer icon-table"></i>
                         </a>
                     </td>
                 </tr>

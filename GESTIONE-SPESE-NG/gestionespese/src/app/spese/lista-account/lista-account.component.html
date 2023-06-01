@@ -23,8 +23,8 @@
                     <th scope="row">{{ rowIndex + 1 }}</th>
                     <td>{{ item.nomeAccount }}</td>
                     <td>
-                        <a class="icon-table" (click)="cancella(item.id)">
-                            <fa-icon [icon]="faTimes" class="primary"></fa-icon>
+                        <a (click)="cancella(item.id)" pTooltip="Elimina Account">
+                            <i class="pi pi-times primary pointer icon-table"></i>
                         </a>
                     </td>
                 </tr>

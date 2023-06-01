@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { faCloudDownloadAlt, faCommentDots, faEdit, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
@@ -22,8 +21,6 @@ export class CaricaSpeseComponent implements OnInit {
   listaAccount : any[] = []; 
   elementoSelezionato : any = {};
 
-  faComment = faCommentDots;
-  faDownload = faCloudDownloadAlt;
   inserimento = false;
 
   caricaSpeseForm = new UntypedFormGroup({
