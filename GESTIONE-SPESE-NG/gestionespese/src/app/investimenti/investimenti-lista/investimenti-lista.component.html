@@ -28,7 +28,7 @@
                     <td>{{ item.quotaAttuale }}</td>
                     <td>{{ item.dataAggiornamento }}</td>
                     <td>
-                        <a (click)="link(item)" pTooltip="Apri Link">
+                        <a (click)="link(item)" pTooltip="Apri Link" *ngIf="item.url && item.url.length">
                           <i class="pi pi-external-link primary pointer icon-table"></i>
                         </a>
                         <a (click)="cancella(item)" pTooltip="Elimina Investimento">
