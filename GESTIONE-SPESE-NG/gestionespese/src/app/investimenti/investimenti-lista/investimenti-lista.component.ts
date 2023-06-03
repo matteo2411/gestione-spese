@@ -4,6 +4,7 @@ import { GlobalConstants } from 'src/app/globalConstants';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { ConfirmEventType, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-investimenti-lista',
@@ -20,6 +21,7 @@ export class InvestimentiListaComponent implements OnInit {
 
   constructor(private commonService : CommonDataService, 
               private router : Router,
+              private confirmationService : ConfirmationService,
               private modalService : NgbModal) { }
 
   ngOnInit(): void {
@@ -61,7 +63,24 @@ export class InvestimentiListaComponent implements OnInit {
     })
   }
 
-  cancella(id : number): void {
+  
+  cancella(investimento : any): void {
+    this.confirmationService.confirm({
+      message: 'Stai eliminando definitivamente il fondo d\'investimento '+investimento.nomeInvestimento+', sicuro di voler procedere? L\'operazione è irreversibile',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.eseguiCancella(investimento.id);
+      },
+      reject: (type: Number) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  break;
+          }
+      }
+    });
+  }
+
+  eseguiCancella(id : number): void {
     this.commonService.resetMessages();
     this.commonService.showSpinner();
     this.commonService.callApiDelete(GlobalConstants.eliminaInvestimento+id).subscribe((data)=>{

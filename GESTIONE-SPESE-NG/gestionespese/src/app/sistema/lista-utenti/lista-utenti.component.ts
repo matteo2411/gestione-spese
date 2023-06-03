@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfirmEventType, ConfirmationService } from 'primeng/api';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
@@ -11,9 +12,11 @@ export class ListaUtentiComponent implements OnInit {
 
   listaUtenti : any[] = [];
 
-  constructor(private commonService : CommonDataService) { }
+  constructor(private commonService : CommonDataService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
+    
+    this.commonService.resetMessages();
     this.getUtenti();
 
     this.commonService.setBreadcrumbItems([
@@ -36,7 +39,6 @@ export class ListaUtentiComponent implements OnInit {
   }
 
   getUtenti() : void{
-    this.commonService.resetMessages();
     this.commonService.showSpinner();
     this.commonService.callApiGet(GlobalConstants.listaUtenti).subscribe((data)=>{
       this.commonService.hideSpinner();
@@ -52,7 +54,23 @@ export class ListaUtentiComponent implements OnInit {
     })
   }
 
-  cancella(id : number): void {
+  cancella(utente : any): void {
+    this.confirmationService.confirm({
+      message: 'Stai eliminando definitivamente l\'utente '+utente.name+', sicuro di voler procedere? L\'operazione è irreversibile',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.eseguiCancella(utente.id);
+      },
+      reject: (type: Number) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  break;
+          }
+      }
+    });
+  }
+
+  eseguiCancella(id : number): void {
     this.commonService.resetMessages();
     this.commonService.callApiDelete(GlobalConstants.eliminaUtente+id).subscribe((data)=>{
       if(data.success){

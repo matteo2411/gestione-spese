@@ -3,15 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { faArrowLeft, faCalendarAlt, faChartPie, faFileExcel, faFilter, faSearch, faTimes, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmEventType, ConfirmationService, MegaMenuItem, MessageService, SortEvent } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, SortEvent } from 'primeng/api';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
 @Component({
   selector: 'app-scarica-spese',
   templateUrl: './scarica-spese.component.html',
-  styleUrls: ['./scarica-spese.component.css'],
-  providers: [ConfirmationService, MessageService]
+  styleUrls: ['./scarica-spese.component.css']
 })
 export class ScaricaSpeseComponent implements OnInit {
 

@@ -14,6 +14,16 @@
             </div>
         </div>
 
+        <p-confirmDialog #cd [style]="{width: '50vw'}">
+            <ng-template pTemplate="header">
+                <h3>Eliminazione categoria</h3>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+                <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+            </ng-template>
+        </p-confirmDialog>
+
         <div class="row">
             <div class="col">
                 <div class="card flex justify-content-center">

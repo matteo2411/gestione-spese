@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from 'src/app/globalConstants';
 import { CommonDataService } from 'src/app/common/common-data.service';
+import { ConfirmEventType, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-lista-tipologie',
@@ -11,7 +12,7 @@ export class ListaTipologieComponent implements OnInit {
 
   listaTipologie : any[] = [];
 
-  constructor(private commonService : CommonDataService) { }
+  constructor(private commonService : CommonDataService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.getTipologie();
@@ -57,8 +58,24 @@ export class ListaTipologieComponent implements OnInit {
       this.commonService.addDangerMessage("Errore nel recupero delle tipologie",true);
     })
   }
+  
+  cancella(tipologia : any): void {
+    this.confirmationService.confirm({
+      message: 'Stai eliminando definitivamente la tipologia '+tipologia.nomeTipologia+', sicuro di voler procedere? L\'operazione è irreversibile',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.eseguiCancella(tipologia.id);
+      },
+      reject: (type: Number) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  break;
+          }
+      }
+    });
+  }
 
-  cancella(id : number): void {
+  eseguiCancella(id : number): void {
     this.commonService.showSpinner();
     this.commonService.resetMessages();
     this.commonService.callApiDelete(GlobalConstants.eliminaTipologia+id).subscribe((data)=>{

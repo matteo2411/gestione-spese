@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import { MenuItem, MessageService, TreeNode } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MenuItem, MessageService, TreeNode } from 'primeng/api';
 
 @Component({
   selector: 'app-lista-categorie',
@@ -18,7 +18,7 @@ export class ListaCategorieComponent implements OnInit {
   files: TreeNode[];
   selectedFile: TreeNode;
 
-  constructor(private commonService : CommonDataService) { }
+  constructor(private commonService : CommonDataService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.getCategorie(true);
@@ -97,7 +97,19 @@ export class ListaCategorieComponent implements OnInit {
   
   eliminaCategoria(){
     this.commonService.resetMessages();
-    this.cancella(this.selectedFile.data);
+    this.confirmationService.confirm({
+      message: 'Stai eliminando definitivamente la categoria '+this.selectedFile.data.nomeCategoria+', sicuro di voler procedere? L\'operazione è irreversibile',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.cancella(this.selectedFile.data);
+      },
+      reject: (type: Number) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  break;
+          }
+      }
+    });
   }
 
   cancella(categoria : any): void {

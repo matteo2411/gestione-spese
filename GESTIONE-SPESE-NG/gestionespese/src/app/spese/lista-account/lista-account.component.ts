@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfirmEventType, ConfirmationService } from 'primeng/api';
 import { CommonDataService } from 'src/app/common/common-data.service';
 import { GlobalConstants } from 'src/app/globalConstants';
 
@@ -11,7 +12,7 @@ export class ListaAccountComponent implements OnInit {
 
   listaAccount : any[] = [];
 
-  constructor(private commonService : CommonDataService) { }
+  constructor(private commonService : CommonDataService, private confirmationService : ConfirmationService) { }
 
   ngOnInit(): void {
     this.getAccounts();
@@ -58,7 +59,23 @@ export class ListaAccountComponent implements OnInit {
     })
   }
 
-  cancella(id : number): void {
+  cancella(account : any): void {
+    this.confirmationService.confirm({
+      message: 'Stai eliminando definitivamente l\'account '+account.nomeAccount+', sicuro di voler procedere? L\'operazione è irreversibile',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.eseguiCancella(account.id);
+      },
+      reject: (type: Number) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  break;
+          }
+      }
+    });
+  }
+
+  eseguiCancella(id : number): void {
     this.commonService.showSpinner();
     this.commonService.resetMessages();
     this.commonService.callApiDelete(GlobalConstants.eliminaAccount+id).subscribe((data)=>{

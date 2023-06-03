@@ -53,7 +53,7 @@ import { TableModule } from 'primeng/table';
 
 import { BreadcrumbComponent } from './common/breadcrumb/breadcrumb.component';
 import { InvestimentoStoricoComponent } from './investimenti/investimento-storico/investimento-storico.component';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 registerLocaleData(localeIT);
 
@@ -192,7 +192,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: LOCALE_ID, useValue: 'it-IT' } ,
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
-    MessageService
+    MessageService,
+    ConfirmationService
   ],
   bootstrap: [AppComponent] 
 })
