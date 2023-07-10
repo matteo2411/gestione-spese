@@ -57,7 +57,7 @@ public class Spesa implements Comparable {
   @Lob
   private Clob descrizioneEstesa;
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "FK_TIPOLOGIA")
   private Tipologia tipologia;
   @ManyToOne
