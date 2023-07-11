@@ -2,6 +2,8 @@ package it.progetticasa.gestorespese.utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -114,9 +116,10 @@ public class Utility {
 	}
 	
 	public static java.sql.Date getNowSql() {
-		Calendar today = Calendar.getInstance();
-		today.set(Calendar.HOUR_OF_DAY, 0);
-		return convertUtilToSql(today.getTime());
+//		Calendar today = Calendar.getInstance();
+//		today.set(Calendar.HOUR_OF_DAY, 0);
+//		return convertUtilToSql(today.getTime());
+		return java.sql.Date.valueOf(LocalDate.now(ZoneId.of("Europe/Paris")));
 	}
 	
 	public static java.sql.Date convertUtilToSql(java.util.Date uDate) {
