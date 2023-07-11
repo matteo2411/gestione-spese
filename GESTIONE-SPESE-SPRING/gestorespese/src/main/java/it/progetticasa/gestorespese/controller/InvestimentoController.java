@@ -38,8 +38,8 @@ public class InvestimentoController {
 	  @PostMapping(path="")
 	  public @ResponseBody ResponseEntity<Risposta<Investimento>> createInvestimento(@RequestBody Investimento investimento) {
 		  try {
-			  investimento.setDataAggiornamento(Utility.getNowSql());
-			  investimento.setDataInizio(Utility.getNowSql());
+			  investimento.setDataAggiornamento(Utility.getNowLocale());
+			  investimento.setDataInizio(Utility.getNowLocale());
 			  Investimento investimentoInserito = investimentoService.save(investimento);
 			  Risposta<Investimento> risposta = new Risposta<Investimento>();
 			  risposta.setOggetto(investimentoInserito);
@@ -58,7 +58,7 @@ public class InvestimentoController {
 	  @PutMapping(path="")
 	  public @ResponseBody ResponseEntity<Risposta<Investimento>> updateInvestimento(@RequestBody Investimento investimento) {
 		  try {
-			  investimento.setDataAggiornamento(Utility.getNowSql());
+			  investimento.setDataAggiornamento(Utility.getNowLocale());
 			  Investimento investimentoInserito = investimentoService.save(investimento);
 			  Risposta<Investimento> risposta = new Risposta<Investimento>();
 			  risposta.setOggetto(investimentoInserito);

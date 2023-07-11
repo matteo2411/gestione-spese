@@ -116,10 +116,13 @@ public class Utility {
 	}
 	
 	public static java.sql.Date getNowSql() {
-//		Calendar today = Calendar.getInstance();
-//		today.set(Calendar.HOUR_OF_DAY, 0);
-//		return convertUtilToSql(today.getTime());
-		return java.sql.Date.valueOf(LocalDate.now(ZoneId.of("Europe/Paris")));
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		return convertUtilToSql(today.getTime());
+	}
+
+	public static LocalDate getNowLocale() {
+		return LocalDate.now(ZoneId.of("Europe/Paris"));
 	}
 	
 	public static java.sql.Date convertUtilToSql(java.util.Date uDate) {

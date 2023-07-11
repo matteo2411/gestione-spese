@@ -1,6 +1,6 @@
 package it.progetticasa.gestorespese.model.investimenti;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,16 +33,16 @@ public class Investimento {
 	  
 	  @Column(name = "DATA_AGGIORNAMENTO")
 	  @JsonFormat(pattern = "dd-MM-yyyy")
-	  private Date dataAggiornamento;
+	  private LocalDate dataAggiornamento;
 	  
 	  @Column(name = "URL_INVESTIMENTO")
 	  private String url;
 	  
 	  @Column(name = "DATA_INIZIO")
 	  @JsonFormat(pattern = "dd-MM-yyyy")
-	  private Date dataInizio;
+	  private LocalDate dataInizio;
 	  
 	  @Column(name = "DATA_FINE")
 	  @JsonFormat(pattern = "dd-MM-yyyy")
-	  private Date dataFine;
+	  private LocalDate dataFine;
 }
